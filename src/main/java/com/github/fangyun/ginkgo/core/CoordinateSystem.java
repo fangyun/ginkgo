@@ -225,20 +225,14 @@ public final class CoordinateSystem implements Serializable {
 	}
 
 	/**
-	 * Returns the maximum number of moves per game. It should be extremely rare
-	 * to actually play this many moves, but a playout (which doesn't check
-	 * superko) might run this long. It's faster to just cut off such unusual
-	 * runs (by forcing passes) than to check for superko in playouts.
+	 * 返回每棋局最大落子数目. 很少有实际棋局下到这个数目, 但一次棋局（不检查大劫）可能落子到此.通过这种方式来检查切断不寻常的落子要快于检查棋局中大劫.
 	 */
 	public short getMaxMovesPerGame() {
 		return maxMovesPerGame;
 	}
 
 	/**
-	 * Returns an array of p's four orthogonal neighbors and four diagonal
-	 * neighbors. If a point is at the edge (corner) of the board, one (two) of
-	 * its neighbors are off-board points. The neighbors of an off-board point
-	 * are not defined.
+	 * 返回点p的8个方位的邻居. 如果点在边缘（角），一个（两个）邻居将是棋盘外点.棋盘外点的邻居未定义.
 	 * <p>
 	 *
 	 * @see com.github.fangyun.ginkgo.core.CoordinateSystem
@@ -247,22 +241,22 @@ public final class CoordinateSystem implements Serializable {
 		return neighbors[p];
 	}
 
-	/** Returns the width of the board (e.g., 19). */
+	/** 返回棋盘的尺寸(例如., 19). */
 	public int getWidth() {
 		return width;
 	}
 
-	/** Returns true if p is on the board. */
+	/** 返回true如果p在棋盘上. */
 	public boolean isOnBoard(short p) {
 		return isValidOneDimensionalCoordinate(row(p)) && isValidOneDimensionalCoordinate(column(p));
 	}
 
-	/** Returns true if c is a valid row or column index. */
+	/** 返回true如果c有效的行或列的下标. */
 	public boolean isValidOneDimensionalCoordinate(int c) {
 		return c >= 0 & c < width;
 	}
 
-	/** Returns the Manhattan distance from p to q. */
+	/** 返回p到q的曼哈顿距离. */
 	public int manhattanDistance(short p, short q) {
 		final int rowd = abs(row(p) - row(q));
 		final int cold = abs(column(p) - column(q));
@@ -270,8 +264,7 @@ public final class CoordinateSystem implements Serializable {
 	}
 
 	/**
-	 * Used so that serialization, as used in CopiableStructure, does not create
-	 * redundant CoordinateSystems.
+	 * 用来序列化，被用在CopiableStructure, 不去创建冗余的CoordinateSystems对象.
 	 *
 	 * @see CopiableStructure
 	 */
@@ -279,17 +272,17 @@ public final class CoordinateSystem implements Serializable {
 		return forWidth(width);
 	}
 
-	/** Returns the row of point p. */
+	/** 返回点p的行. */
 	public int row(short p) {
 		return p / south - 1;
 	}
 
-	/** Returns a String representation of row r. */
+	/** 返回字符串形式的行r. */
 	public String rowToString(int row) {
 		return "" + (width - row);
 	}
 
-	/** Returns a String representation of p. */
+	/** 返回字符串形式的点p. */
 	public String toString(short p) {
 		if (p == PASS) {
 			return "PASS";

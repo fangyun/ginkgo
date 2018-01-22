@@ -4,7 +4,7 @@ import static com.github.fangyun.ginkgo.core.CoordinateSystem.RESIGN;
 import static com.github.fangyun.ginkgo.core.StoneColor.BLACK;
 import static com.github.fangyun.ginkgo.core.StoneColor.WHITE;
 import static com.github.fangyun.ginkgo.experiment.Git.getGitCommit;
-import static com.github.fangyun.ginkgo.experiment.PropertyPaths.OREGO_ROOT;
+import static com.github.fangyun.ginkgo.experiment.PropertyPaths.GINKGO_ROOT;
 import static java.io.File.separator;
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Double.parseDouble;
