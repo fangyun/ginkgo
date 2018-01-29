@@ -1,6 +1,6 @@
 package com.github.fangyun.ginkgo.core;
 
-/** 子类看有效颜色. */
+/** 从子类看有效颜色. */
 public interface Color {
 
 	/** 返回颜色在图示中对应的字符. */

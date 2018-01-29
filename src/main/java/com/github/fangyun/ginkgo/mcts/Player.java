@@ -1,31 +1,31 @@
 package com.github.fangyun.ginkgo.mcts;
 
-import static edu.lclark.orego.core.CoordinateSystem.NO_POINT;
-import static edu.lclark.orego.core.CoordinateSystem.PASS;
-import static edu.lclark.orego.core.Legality.OK;
-import static edu.lclark.orego.core.NonStoneColor.*;
-import static edu.lclark.orego.core.StoneColor.*;
-import static edu.lclark.orego.experiment.Logging.*;
+import static com.github.fangyun.ginkgo.core.CoordinateSystem.NO_POINT;
+import static com.github.fangyun.ginkgo.core.CoordinateSystem.PASS;
+import static com.github.fangyun.ginkgo.core.Legality.OK;
+import static com.github.fangyun.ginkgo.core.NonStoneColor.*;
+import static com.github.fangyun.ginkgo.core.StoneColor.*;
+import static com.github.fangyun.ginkgo.experiment.Logging.*;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import edu.lclark.orego.book.OpeningBook;
-import edu.lclark.orego.core.Board;
-import edu.lclark.orego.core.Color;
-import edu.lclark.orego.core.CoordinateSystem;
-import edu.lclark.orego.core.Legality;
-import edu.lclark.orego.core.StoneColor;
-import edu.lclark.orego.experiment.Logging;
-import edu.lclark.orego.feature.HistoryObserver;
-import edu.lclark.orego.score.FinalScorer;
-import edu.lclark.orego.time.TimeManager;
-import edu.lclark.orego.util.ShortList;
-import edu.lclark.orego.util.ShortSet;
+import com.github.fangyun.ginkgo.book.OpeningBook;
+import com.github.fangyun.ginkgo.core.Board;
+import com.github.fangyun.ginkgo.core.Color;
+import com.github.fangyun.ginkgo.core.CoordinateSystem;
+import com.github.fangyun.ginkgo.core.Legality;
+import com.github.fangyun.ginkgo.core.StoneColor;
+import com.github.fangyun.ginkgo.experiment.Logging;
+import com.github.fangyun.ginkgo.feature.HistoryObserver;
+import com.github.fangyun.ginkgo.score.FinalScorer;
+import com.github.fangyun.ginkgo.time.TimeManager;
+import com.github.fangyun.ginkgo.util.ShortList;
+import com.github.fangyun.ginkgo.util.ShortSet;
 
-/** Runs playouts and chooses moves. */
+/** 下子. */
 public final class Player {
 
 	private final Board board;
@@ -33,21 +33,20 @@ public final class Player {
 	private OpeningBook book;
 
 	/**
-	 * True if we should search for opponent's dead stones and bias moves that
-	 * kill them.
+	 * true 如果我们应到搜索对手死棋和会杀死他们的偏子.
 	 */
 	private boolean cleanupMode;
 
 	private final CoordinateSystem coords;
 
 	/**
-	 * True if the polite coup de grace feature is turned on.
+	 * true 如果优雅的妙招被打开.
 	 */
 	private boolean coupDeGrace;
 
 	private TreeDescender descender;
 
-	/** For managing threads. */
+	/** 管理线程. */
 	private ExecutorService executor;
 
 	private final FinalScorer finalScorer;
@@ -55,40 +54,37 @@ public final class Player {
 	private final HistoryObserver historyObserver;
 
 	/**
-	 * True if the threads should keep running, e.g., because time has not run
-	 * out.
+	 * True，如果线程保持运行。例如因为时间还没有用完.
 	 */
 	private boolean keepRunning;
 
-	/** Used to verify that all McRunnables have stopped. */
+	/** 用来校验所有已经停止的McRunnables. */
 	private CountDownLatch latch;
 
-	/** Number of milliseconds to spend on the next move. */
+	/** 下一步运行花费的毫秒. */
 	private int msecPerMove;
 
-	/** True if we should think during the opponent's turn. */
+	/** True 如果在对手轮次我们还可以思考. */
 	private boolean ponder;
 
-	/** For running playouts. */
+	/** 运行的棋局. */
 	private final McRunnable[] runnables;
 
 	/**
-	 * True if the setTimeRemaining method has been called, because a time_left
-	 * command was received. If true, use the time manager. Otherwise just
-	 * allocate msecPerMove for each move.
+	 * True，如果setTimeRemaining已经被调用, 因为一个time_left被收到. 如果true，用时间管理器. 否则只用为每一落子用分配的msecPerMove.
 	 */
 	private boolean timeLeftWasSent;
 
-	/** Object used to calculate amount of time used in generating a move. */
+	/** 用来计算产生一步落子所用时间. */
 	private TimeManager timeManager;
 
 	private TreeUpdater updater;
 
 	/**
 	 * @param threads
-	 *            Number of threads to run.
+	 *            运行的线程数目.
 	 * @param stuff
-	 *            The board and any associated BoardObservers, Mover, etc.
+	 *            棋盘相关的BoardObservers, Mover等.
 	 */
 	public Player(int threads, CopiableStructure stuff) {
 		// TODO Is this expensive copying (which includes the transposition and shape tables) necessary?
@@ -108,7 +104,7 @@ public final class Player {
 		timeLeftWasSent = false;
 	}
 
-	/** Plays at p on this player's board. */
+	/** 落子在点p. */
 	public Legality acceptMove(short point) {
 		stopThreads();
 		final Legality legality = board.play(point);
@@ -120,7 +116,7 @@ public final class Player {
 		return legality;
 	}
 
-	/** Runs the McRunnables for some time and then returns the best move. */
+	/** 运行McRunnables一段时间，后返回最佳落子. */
 	public short bestMove() {
 		stopThreads();
 		final short move = book.nextMove(board);
@@ -173,8 +169,7 @@ public final class Player {
 	}
 
 	/**
-	 * Returns true if we can win by passing, assuming that all of our dead
-	 * stones are removed and all enemy stones are alive.
+	 * 返回true，如果我们通过虚手能赢, 假定所有死棋已移除，所有对手棋还活着.
 	 */
 	boolean canWinByPassing() {
 		final ShortSet ourDead = findDeadStones(1.0, board.getColorToPlay());
@@ -194,7 +189,7 @@ public final class Player {
 		return false;
 	}
 
-	/** Clears the board and does anything else necessary to start a new game. */
+	/** 清除棋盘，做必要的事情以开始新的对局. */
 	public void clear() {
 		stopThreads();
 		board.clear();
@@ -203,24 +198,23 @@ public final class Player {
 		cleanupMode = false;
 	}
 
-	/** Play any moves within the tree (or other structure). */
+	/** 在树中下任意落子(或其它结构). */
 	public void descend(McRunnable runnable) {
 		descender.descend(runnable);
 	}
 
-	/** Stops any running threads. */
+	/** 终止任何运行的线程. */
 	public void endGame() {
 		stopThreads();
 	}
 
-	/** @see edu.lclark.orego.score.FinalScorer#score */
+	/** @see com.github.fangyun.ginkgo.score.FinalScorer#score */
 	public double finalScore() {
 		return finalScorer.score();
 	}
 
 	/**
-	 * Biases moves that result in clearing opponent's dead chains off the
-	 * board. Returns true if any such moves were found.
+	 * 清除对手死链离开棋盘导致的偏置落子. 返回true，如果存在这样的落子.
 	 */
 	private boolean findCleanupMoves() {
 		log("Finding cleanup moves");
@@ -251,13 +245,12 @@ public final class Player {
 	}
 
 	/**
-	 * Returns a list of stones that don't survive many random playouts.
+	 * 返回那些没有幸存许多随机棋局的棋子列表.
 	 * 
 	 * @param threshold
-	 *            Portion of games a stone has to survive to be considered
-	 *            alive.
+	 *            棋局部分幸存下才考虑为活棋.
 	 * @param color
-	 *            Color of stones we're examining.
+	 *            正在考察的棋子颜色.
 	 */
 	public ShortSet findDeadStones(double threshold, StoneColor color) {
 		final boolean threadsWereRunning = keepRunning;
@@ -301,7 +294,7 @@ public final class Player {
 		return deadStones;
 	}
 
-	/** Returns the board associated with this player. */
+	/** 返回棋手关联的棋盘. */
 	public Board getBoard() {
 		return board;
 	}
@@ -310,12 +303,12 @@ public final class Player {
 		return descender;
 	}
 
-	/** Returns the scorer. */
+	/** 返回评分器. */
 	public FinalScorer getFinalScorer() {
 		return finalScorer;
 	}
 
-	/** Returns the ith McRunnable. */
+	/** 返回第i个McRunnable. */
 	public McRunnable getMcRunnable(int i) {
 		return runnables[i];
 	}
@@ -324,7 +317,7 @@ public final class Player {
 		return msecPerMove;
 	}
 
-	/** Returns the number of threads this Player runs. */
+	/** 返回棋手运行的线程个数. */
 	int getNumberOfThreads() {
 		return runnables.length;
 	}
@@ -345,53 +338,51 @@ public final class Player {
 		return timeManager;
 	}
 
-	/** Returns the updater for this player. */
+	/** 返回此棋手的更新器 */
 	TreeUpdater getUpdater() {
 		return updater;
 	}
 
-	/** Indicate that one McRunnable has stopped. */
+	/** 指出一个McRunnable已经停止. */
 	void notifyMcRunnableDone() {
 		latch.countDown();
 	}
 
-	/** Sets whether we think during the opponent's turn. */
+	/** 设置是否在对手的轮次我们仍继续思考. */
 	public void ponder(boolean pondering) {
 		this.ponder = pondering;
 	}
 
-	/** Sets cleanup mode, as specified in the GTP standard. */
+	/** 设置清理模式，GTP标准需要. */
 	public void setCleanupMode(boolean cleanup) {
 		cleanupMode = cleanup;
 	}
 
 	/**
-	 * Sets the color to play, used with programs like GoGui to set up initial
-	 * stones.
+	 * 设置将要落子的棋的棋色，用在GoGui来设置初始棋子.
 	 */
 	public void setColorToPlay(StoneColor stoneColor) {
 		board.setColorToPlay(stoneColor);
 	}
 
 	/**
-	 * Sets whether we should try to capture dead enemy stones after opponent
-	 * passes.
+	 * 设置是否在对手虚手后我们尝试杀对手的死棋.
 	 */
 	public void setCoupDeGrace(boolean enabled) {
 		coupDeGrace = enabled;
 	}
 
-	/** Sets the number of milliseconds to allocate per move. */
+	/** 设置每次落子分配的毫秒数. */
 	public void setMsecPerMove(int msec) {
 		msecPerMove = msec;
 	}
 
-	/** Sets which opening book to use. Default is DoNothing. */
+	/** 设置使用的开放书，缺省是DoNothing. */
 	public void setOpeningBook(OpeningBook book) {
 		this.book = book;
 	}
 
-	/** Handles a time left signal from GTP. */
+	/** 处理来自GTP的剩余时间信号. */
 	public void setRemainingTime(int seconds) {
 		timeLeftWasSent = true;
 		timeManager.setRemainingSeconds(seconds);
@@ -411,29 +402,28 @@ public final class Player {
 		this.updater = updater;
 	}
 
-	/** Places standard handicap stones. */
+	/** 放置标准让子棋的棋子. */
 	public void setUpHandicap(int handicapSize) {
 		clear();
 		board.setUpHandicap(handicapSize);
 	}
 
-	/** Places moves read from an SGF game. */
-	@SuppressWarnings("boxing")
+	/** 放置从SGF游戏读来的落子. */
 	public void setUpSgfGame(List<Short> moves) {
 		board.clear();
 		for (final Short move : moves) {
 			if (board.play(move) != OK) {
-				throw new IllegalArgumentException("Sgf contained illegal move");
+				throw new IllegalArgumentException("SGF包含非法落子");
 			}
 		}
 	}
 
-	/** True if McRunnables attached to this Player should keep running. */
+	/** true如果棋手的McRunnables应当保持运行. */
 	public boolean shouldKeepRunning() {
 		return keepRunning;
 	}
 
-	/** Starts the McRunnables' threads. */
+	/** 启动McRunnables线程. */
 	private void startThreads() {
 		if (keepRunning) {
 			log("Threads were already running");
@@ -455,7 +445,7 @@ public final class Player {
 		executor.shutdown();
 	}
 
-	/** Stops the McRunnables' threads. */
+	/** 停止McRunnables线程. */
 	private void stopThreads() {
 		if (!keepRunning) {
 			log("Threads were already stopped");
@@ -477,11 +467,9 @@ public final class Player {
 	}
 
 	/**
-	 * Undoes the last move. This is done by clearing the board and replaying
-	 * all moves but the last.
+	 * 撤回最后落子. 通过清理棋盘，然后重放所有落子除了最后一步.
 	 * 
-	 * @return true if undoing succeeded (i.e., it was not the beginning of the
-	 *         game).
+	 * @return true 如果撤回成功 (例如, 不是在棋局开始).
 	 */
 	public boolean undo() {
 		if (board.getTurn() == 0) {
@@ -506,14 +494,13 @@ public final class Player {
 		return true;
 	}
 
-	/** Incorporate the result of a run in the tree. */
+	/** 合并一次运行结果到树中. */
 	public void updateTree(Color winner, McRunnable mcRunnable) {
 		updater.updateTree(winner, mcRunnable);
 	}
 
 	/**
-	 * Gets all the stones on the board that live with at least probability
-	 * threshold.
+	 * 得到棋盘活在至少可能阀值的所有棋子.
 	 */
 	public ShortSet getLiveStones(double threshold) {
 		ShortSet deadStones = findDeadStones(threshold, WHITE);
@@ -529,8 +516,7 @@ public final class Player {
 		return liveStones;
 	}
 
-	/** Returns GoGui information showing search values. */
-	@SuppressWarnings("boxing")
+	/** 返回GoGui信息显示搜索值. */
 	public String goguiSearchValues() {
 		// TODO Encapsulate this normalization in a single place, called by all
 		// the various gogui methods
@@ -564,7 +550,6 @@ public final class Player {
 		return result;
 	}
 
-	@SuppressWarnings("boxing")
 	public String goguiGetWins() {
 		// TODO Encapsulate this normalization in a single place, called by all
 		// the various gogui methods
@@ -597,7 +582,6 @@ public final class Player {
 		return result;
 	}
 
-	@SuppressWarnings("boxing")
 	public String goguiGetWinrate() {
 		// TODO Encapsulate this normalization in a single place, called by all
 		// the various gogui methods
@@ -631,7 +615,6 @@ public final class Player {
 		return result;
 	}
 
-	@SuppressWarnings("boxing")
 	public String goguiGetRuns() {
 		// TODO Encapsulate this normalization in a single place, called by all
 		// the various gogui methods
@@ -663,5 +646,4 @@ public final class Player {
 		}
 		return result;
 	}
-
 }
