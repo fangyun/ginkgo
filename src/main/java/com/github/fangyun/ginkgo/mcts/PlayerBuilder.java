@@ -207,7 +207,7 @@ public final class PlayerBuilder {
 			result.setTimeManager(new SimpleTimeManager(msecPerMove));
 		}
 		result.setCoupDeGrace(coupDeGrace);
-		log("准备创建打开书");
+		log("准备创建公开棋谱");
 		if (book && width == 19) {
 			result.setOpeningBook(new FusekiBook());
 		} else {

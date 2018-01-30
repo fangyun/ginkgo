@@ -46,7 +46,7 @@ public final class ExitingTimeManager implements TimeManager {
 	/** 时间从以前轮来的时间（以毫秒）. */
 	private int rollover;
 
-	/** Number of time slices left in this turn. */
+	/** 这个轮次中剩下的时间片数. */
 	private int slicesRemaining;
 
 	public ExitingTimeManager(Player player) {
@@ -55,8 +55,7 @@ public final class ExitingTimeManager implements TimeManager {
 	}
 
 	/**
-	 * Returns how confident we are (from 0.0 to 1.0) that the best move has a
-	 * higher winrate than the rest of the legal moves.
+	 * 返回我们的置信度(从0.0到1.0)，最好的落子比其他的合法落子都有更高的赢率
 	 */
 	private double confidenceBestVsRest() {
 		final SearchNode root = player.getRoot();
@@ -85,7 +84,7 @@ public final class ExitingTimeManager implements TimeManager {
 		return c;
 	}
 
-	/** Sets the number and size of time slices to use. */
+	/** 设置要使用的时间片的数量和大小. */
 	private void createSlices() {
 		slicesRemaining = SLICE_COUNT;
 		msecPerSlice = (getMsecPerMove() + rollover) / SLICE_COUNT;
@@ -106,13 +105,13 @@ public final class ExitingTimeManager implements TimeManager {
 		return msecPerSlice;
 	}
 
-	/** Computes the total time to allocate to the next move. */
+	/** 计算分配到下一落子的总时间. */
 	private int getMsecPerMove() {
 		final int movesLeft = max(10, (int) (board.getVacantPoints().size() * TIME_CONSTANT));
 		return max(1, msecRemaining / movesLeft);
 	}
 
-	/** Returns the number of msecs to be rolled over into the next turn. */
+	/** 返回到下一个回合的毫秒数. */
 	int getRollover() {
 		return rollover;
 	}
