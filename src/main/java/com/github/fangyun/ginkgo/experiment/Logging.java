@@ -36,7 +36,7 @@ public final class Logging {
 	}
 
 	/**
-	 * Logs a message at the default INFO level.
+	 * 在默认INFO级别上记录消息.
 	 *
 	 * @see Logger#log(Level, String)
 	 */
@@ -45,8 +45,7 @@ public final class Logging {
 	}
 
 	/**
-	 * Returns the time represented by stamp as a number of minutes since the
-	 * beginning of the day.
+	 * 返回时间戳表示的从一天开始的分钟时间.
 	 */
 	public static int rawTime(String stamp) {
 		int hour = Integer.parseInt(stamp.substring(11, 13));
@@ -55,11 +54,10 @@ public final class Logging {
 	}
 
 	/**
-	 * Sets logging to appear in a timestamped file in directory. Behavior is
-	 * undefined if two instances of Orego are launched at the same millisecond.
+	 * 设置日志记录以显示在目录中一个时间戳的文件中。如果两个Ginkgo的实例在同一毫秒内启动，行为就没有意义了.
 	 */
 	public static void setFilePath(String directory) {
-		logger = Logger.getLogger("orego-default");
+		logger = Logger.getLogger("ginkgo-default");
 		new File(directory).mkdir();
 		directory += File.separator + GameBatch.timeStamp(false) + ".log";
 		try {

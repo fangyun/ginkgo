@@ -45,7 +45,7 @@ import com.github.fangyun.ginkgo.util.ShortSet;
  * <dt>boardsize</dt>
  * <dd>棋盘宽度，缺省19.</dd>
  * <dt>book</dt>
- * <dd>是否Ginkgo从fuseki书开始游戏。缺省true。</dd>
+ * <dd>是否Ginkgo从布局棋谱开始对弈。缺省true。</dd>
  * <dt>grace</dt>
  * <dd>是否采用优雅模式。当对手虚招时，Ginkgo试图清理棋盘上的对手的死棋，或者如果在当前棋盘局面上能赢的话，则同样虚招。缺省false.</dd>
  * <dt>gestation</dt>
@@ -77,7 +77,7 @@ public final class Ginkgo {
 
 	private static final String[] DEFAULT_GTP_COMMANDS = { "black", "boardsize", "clear_board", "final_score",
 			"final_status_list", "fixed_handicap", "genmove", "genmove_black", "genmove_white",
-			"gogui-analyze_commands", "gogui-get-wins", "gogui-search-value", "known_command", "kgs-game_over",
+			"gogui-analyze_commands", "gogui-get-wins", "gogui-search-values", "known_command", "kgs-game_over",
 			"kgs-genmove_cleanup", "komi", "list_commands", "loadsgf", "name", "play", "playout_count",
 			"protocol_version", "quit", "reg_genmove", "showboard", "time_left", "time_settings", "undo", "version",
 			"white", };
@@ -86,7 +86,7 @@ public final class Ginkgo {
 		new Ginkgo(args).run();
 	}
 
-	/** True如果运行计算机为期测试收集程序 */
+	/** True如果在电脑上运行测试收集程序 */
 	private boolean cgtc;
 
 	/** 当前命令的GTP的ID数 */
@@ -254,7 +254,7 @@ public final class Ginkgo {
 				player.setUpHandicap(handicapSize);
 				acknowledge();
 			} else {
-				error("无效的让步大小");
+				error("无效的让子大小");
 			}
 		} else if (command.equals("genmove") || command.equals("genmove_black") || command.equals("genmove_white")
 				|| command.equals("kgs-genmove_cleanup") || command.equals("reg_genmove")) {

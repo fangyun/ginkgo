@@ -1,9 +1,8 @@
 package com.github.fangyun.ginkgo.book;
 
-import static com.github.fangyun.ginkgo.experiment.PropertyPaths.GINKGO_ROOT;
-import static com.github.fangyun.ginkgo.experiment.Logging.*;
-import java.io.File;
-import java.io.FileInputStream;
+import static com.github.fangyun.ginkgo.experiment.Logging.log;
+
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 
 import com.github.fangyun.ginkgo.core.Board;
@@ -28,11 +27,9 @@ public final class FusekiBook implements OpeningBook {
 
 	/** 得到哈希Map从文件中. */
 	public FusekiBook(String directory) {
-		final File file = new File(GINKGO_ROOT + directory + File.separator
-				+ "fuseki19.data");
+		final InputStream is = getClass().getResourceAsStream("/books/ginkgo_fuseki19.data");
 		log("Started reading opening book");
-		try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(
-				file))) {
+		try (ObjectInputStream in = new ObjectInputStream(is)) {
 			maxMoves = (Integer) in.readObject();
 			book = (SmallHashMap) in.readObject();
 			log("Finished reading opening book");

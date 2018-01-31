@@ -15,6 +15,8 @@ import com.github.fangyun.ginkgo.core.Board;
 import com.github.fangyun.ginkgo.core.CoordinateSystem;
 import com.github.fangyun.ginkgo.sgf.SgfParser;
 
+import com.github.fangyun.ginkgo.book.SmallHashMap;
+
 /**
  * 构建布局书从(可能嵌套)SGF文件目录. 首先处理数据产生初略书, 然后处理创建为FusekiBook的最终书.
  */

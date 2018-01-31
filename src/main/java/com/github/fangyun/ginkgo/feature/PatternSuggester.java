@@ -1,9 +1,7 @@
 package com.github.fangyun.ginkgo.feature;
 
 import static com.github.fangyun.ginkgo.core.NonStoneColor.VACANT;
-import static com.github.fangyun.ginkgo.experiment.PropertyPaths.GINKGO_ROOT;
 
-import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
 import com.github.fangyun.ginkgo.core.Board;
@@ -22,7 +20,7 @@ public final class PatternSuggester implements Suggester {
 
 	/** 模式被认为是好的，如果它的“赢率”至少是这么高. */
 	private static final float THRESHOLD = 0.8f;
-	
+
 	private final int bias;
 
 	private final Board board;
@@ -34,7 +32,7 @@ public final class PatternSuggester implements Suggester {
 	private final HistoryObserver history;
 
 	private final ShortSet moves;
-	
+
 	public PatternSuggester(Board board, HistoryObserver history) {
 		this(board, history, 0);
 	}
@@ -46,14 +44,12 @@ public final class PatternSuggester implements Suggester {
 		this.history = history;
 		moves = new ShortSet(coords.getFirstPointBeyondBoard());
 		try (ObjectInputStream objectInputStream = new ObjectInputStream(
-				new FileInputStream(GINKGO_ROOT
-						+ "patterns/patterns3x3.data"));) {
+				getClass().getResourceAsStream("/patterns/patterns3x3.data"));) {
 			final int[] fileRuns = (int[]) objectInputStream.readObject();
 			final int[] fileWins = (int[]) objectInputStream.readObject();
 			goodPatterns = new BitVector(fileRuns.length);
 			for (int i = 0; i < fileRuns.length; i++) {
-				goodPatterns.set(i,
-						(float) fileWins[i] / (float) fileRuns[i] > THRESHOLD);
+				goodPatterns.set(i, (float) fileWins[i] / (float) fileRuns[i] > THRESHOLD);
 			}
 			objectInputStream.close();
 		} catch (final Exception e) {
