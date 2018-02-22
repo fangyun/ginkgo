@@ -139,7 +139,7 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 处理己方邻居毗邻刚落子点p，必要时合并链.
+	 * 处理己方邻居毗邻刚落子点p，必要时合并棋串.
 	 */
 	private void adjustFriendlyNeighbors(short p) {
 		if (friendlyNeighboringChainIds.size() == 0) {
@@ -385,7 +385,7 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 遍历p的邻居, 查找潜在的杀棋和链去合并新的落子. 作为副作用，加载域，friendlyNeighboringChainIds,
+	 * 遍历p的邻居, 查找潜在的杀棋和棋串去合并新的落子. 作为副作用，加载域，friendlyNeighboringChainIds,
 	 * enemyNeighboringChainIds, 和 lastPlayLiberties, 被finalizePlay所用.
 	 *
 	 * @return true如果落子在p将是自杀.
@@ -507,7 +507,7 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 落子。没有副作用如果不合法. 返回落子的合法性.
+	 * 落子。如果不合法,则没有副作用. 返回落子的合法性.
 	 */
 	public Legality play(short p) {
 		if (p == PASS) {
@@ -524,8 +524,7 @@ public final class Board implements Serializable {
 		turn++;
 		hash = proposedHash;
 		superKoTable.add(hash);
-		// To ensure that the board is in a stable state, this must be done last
-		// The color argument is flipped back to the color of the stone played
+		//为了确保棋盘处于稳定状态，这调用必须是最后一步，且棋色的参数是被转换回的棋子颜色
 		notifyObservers(colorToPlay.opposite(), p);
 		return OK;
 	}

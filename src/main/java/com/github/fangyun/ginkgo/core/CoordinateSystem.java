@@ -60,7 +60,7 @@ public final class CoordinateSystem implements Serializable {
 	/** 给getNeighbors返回的数组下标. */
 	public static final int NORTHWEST_NEIGHBOR = 4;
 
-	/** 特定值表示虚招. */
+	/** 特定值表示虚手. */
 	public static final short PASS = 1;
 
 	/** 特定值表示弃棋. */
@@ -151,7 +151,7 @@ public final class CoordinateSystem implements Serializable {
 		for (final short p : allPointsOnBoard) {
 			neighbors[p] = new short[] { (short) (p - south), (short) (p - EAST), (short) (p + EAST),
 					(short) (p + south), (short) (p - south - EAST), (short) (p - south + EAST),
-					(short) (p + south - EAST), (short) (p + south + EAST) };
+					(short) (p + south - EAST), (short) (p + south + EAST) }; //{N,W,E,S,WN,EN,WS,ES},上至下，左至右
 			for (int i = 0; i < zobristHashes.length; i++) {
 				zobristHashes[i][p] = random.nextLong();
 			}

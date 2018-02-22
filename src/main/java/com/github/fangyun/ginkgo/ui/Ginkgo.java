@@ -174,7 +174,7 @@ public final class Ginkgo {
 	/**
 	 * 处理一条GTP命令.
 	 * 
-	 * @return true 除了"quit"命令，其它都返回.
+	 * @return true 其它都返回,除了"quit"命令.
 	 */
 	private boolean handleCommand(String command) {
 		log("收到: " + command);

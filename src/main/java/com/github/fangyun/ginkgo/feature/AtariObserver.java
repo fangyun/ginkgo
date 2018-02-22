@@ -12,9 +12,9 @@ import com.github.fangyun.ginkgo.core.StoneColor;
 import com.github.fangyun.ginkgo.util.ShortList;
 import com.github.fangyun.ginkgo.util.ShortSet;
 
-/** 为每一种颜色追踪目前在打吃的所有链. */
-@SuppressWarnings("serial")
+/** 为每一种棋色追踪目前在打吃的所有链. */
 public final class AtariObserver implements BoardObserver {
+	private static final long serialVersionUID = 7102010754419074015L;
 
 	private final Board board;
 

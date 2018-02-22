@@ -426,10 +426,10 @@ public final class Player {
 	/** 启动McRunnables线程. */
 	private void startThreads() {
 		if (keepRunning) {
-			log("Threads were already running");
+			log("线程已经运行");
 			return; // If the threads were already running, do nothing
 		}
-		log("Starting threads");
+		log("启动线程");
 		SearchNode root = getRoot();
 		if (!root.biasUpdated()) {
 			getMcRunnable(0).copyDataFrom(board);
@@ -448,10 +448,10 @@ public final class Player {
 	/** 停止McRunnables线程. */
 	private void stopThreads() {
 		if (!keepRunning) {
-			log("Threads were already stopped");
+			log("线程已经停止");
 			return; // If the threads were not running, do nothing
 		}
-		log("Stopping threads");
+		log("停止线程");
 		try {
 			keepRunning = false;
 			latch.await();
