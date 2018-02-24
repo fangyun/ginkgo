@@ -38,11 +38,11 @@ public final class Board implements Serializable {
 	private final CoordinateSystem coords;
 
 	/**
-	 * 最近落子后的对手的ID链，用于isSuicidal()和isSelfAtari()方法.
+	 * 最近落子后的对手的棋串ID，用于isSuicidal()和isSelfAtari()方法.
 	 */
 	private final ShortList enemyNeighboringChainIds;
 
-	/** 最近落子后己方的ID链. */
+	/** 最近落子后己方的棋串ID. */
 	private final ShortList friendlyNeighboringChainIds;
 
 	/**
@@ -120,7 +120,7 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 处理空链毗邻当前落子点p，或者杀棋、或者减少气数.
+	 * 处理空棋串毗邻当前落子点p，或者杀棋、或者减少气数.
 	 */
 	private void adjustEnemyNeighbors(short p) {
 		capturedStones.clear();
@@ -143,7 +143,7 @@ public final class Board implements Serializable {
 	 */
 	private void adjustFriendlyNeighbors(short p) {
 		if (friendlyNeighboringChainIds.size() == 0) {
-			// 如果没有己方邻居，创建单子链
+			// 如果没有己方邻居，创建单子棋串
 			points[p].becomeOneStoneChain(lastPlayLiberties);
 		} else {
 			short c = friendlyNeighboringChainIds.get(0);
@@ -257,12 +257,12 @@ public final class Board implements Serializable {
 		}
 	}
 
-	/** 返回此点在链中临近点. */
+	/** 返回此点在棋串中临近点. */
 	public short getChainNextPoint(short p) {
 		return points[p].chainNextPoint;
 	}
 
-	/** 返回包含点p的链的根. */
+	/** 返回包含点p的棋串的根. */
 	public short getChainRoot(short p) {
 		return points[p].chainId;
 	}
@@ -458,10 +458,10 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 从基点合并附加点链中. 每个参数都是将合并到链中的棋子.
+	 * 从基点合并附加点棋串中. 每个参数都是将合并到棋串中的棋子.
 	 *
 	 * @param base
-	 *            如果计算不太昂贵, 基点是两链中较大的一个.
+	 *            如果计算不太昂贵, 基点是两棋串中较大的一个.
 	 */
 	private void mergeChains(short base, short appendage) {
 		points[base].liberties.addAll(points[appendage].liberties);

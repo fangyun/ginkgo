@@ -32,12 +32,12 @@ final class Point implements Serializable {
 			2 * FIELD_SIZE };
 
 	/**
-	 * 此点链的标识("root"位置存储在此链中). 空白点的chainId是该点拥有的位置.
+	 * 此点棋串的标识("root"位置存储在此棋串中). 空白点的chainId是该点拥有的位置.
 	 */
 	short chainId;
 
 	/**
-	 * 此点的下一个的指针，链接点成为链.
+	 * 此点的下一个的指针，链接点成为棋串.
 	 */
 	short chainNextPoint;
 
@@ -47,7 +47,7 @@ final class Point implements Serializable {
 	/** 点的下标. */
 	final short index;
 
-	/** 点是链的root，此点的气. */
+	/** 点是棋串的root，此点的气. */
 	final ShortSet liberties;
 
 	/**
@@ -88,7 +88,7 @@ final class Point implements Serializable {
 		}
 	}
 
-	/** 增加落子到链中. */
+	/** 增加落子到棋串中. */
 	void addToChain(Point chain) {
 		chainNextPoint = chain.chainNextPoint;
 		chain.chainNextPoint = index;
@@ -96,7 +96,7 @@ final class Point implements Serializable {
 	}
 
 	/**
-	 * 创建单子链.
+	 * 创建单子棋串.
 	 * 
 	 * @param directLiberties
 	 *            直接围绕此点的气.
@@ -140,7 +140,7 @@ final class Point implements Serializable {
 	}
 
 	/**
-	 * 如果点处于打吃状态，返回true. 假定此点是链的root.
+	 * 如果点处于打吃状态，返回true. 假定此点是棋串的root.
 	 */
 	boolean isInAtari() {
 		assert chainId == index;
