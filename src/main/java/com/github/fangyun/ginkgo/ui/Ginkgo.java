@@ -385,7 +385,7 @@ public final class Ginkgo {
 			if (git.isEmpty()) {
 				git = "未知";
 			}
-			final String version = "Ginkgo Git commit: " + git + " , arguments: " + commandLineArgs;
+			final String version = "Ginkgo Git 提交: " + git + " , 参数: " + commandLineArgs;
 			acknowledge(version);
 		} else {
 			error("未知命令: " + command);
