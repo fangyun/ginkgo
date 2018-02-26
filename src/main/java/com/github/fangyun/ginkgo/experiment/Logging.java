@@ -59,7 +59,11 @@ public final class Logging {
 	public static void setFilePath(String directory) {
 		logger = Logger.getLogger("ginkgo-default");
 		new File(directory).mkdir();
-		directory += File.separator + GameBatch.timeStamp(false) + ".log";
+		if(directory.endsWith(File.separator)) {
+			directory += GameBatch.timeStamp(false) + ".log";
+		}else {
+			directory += File.separator + GameBatch.timeStamp(false) + ".log";
+		}
 		try {
 			final FileHandler handler = new FileHandler(directory);
 			handler.setFormatter(new Formatter() {
