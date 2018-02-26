@@ -10,8 +10,8 @@ public class PropertyPaths {
 	/**
 	 * 包含bin和config的目录.
 	 */
-	public static final String GINKGO_ROOT = Ginkgo.class.getProtectionDomain().getCodeSource().getLocation().getFile()
-			+ ".." + File.separator;
+	public static final String GINKGO_ROOT = System.getProperty("ginkgo.root",
+			Ginkgo.class.getProtectionDomain().getCodeSource().getLocation().getFile() + ".." + File.separator);
 
 	private PropertyPaths() {
 	}

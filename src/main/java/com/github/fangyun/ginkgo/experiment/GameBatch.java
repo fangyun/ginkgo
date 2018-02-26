@@ -47,7 +47,7 @@ public final class GameBatch implements Runnable {
 		} else {
 			punctuation = "-";
 		}
-		return new SimpleDateFormat("yyyy" + punctuation + "MM" + punctuation + "dd" + punctuation + "HH:mm:ss.SSS")
+		return new SimpleDateFormat("yyyy" + punctuation + "MM" + punctuation + "dd" + punctuation + "HH.mm.ss.SSS")
 				.format(new Date());
 	}
 
