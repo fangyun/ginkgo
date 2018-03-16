@@ -380,8 +380,7 @@ public final class Ginkgo {
 				error("不能悔棋");
 			}
 		} else if (command.equals("version")) {
-			String git;
-			git = getGitCommit();
+			String git = getGitCommit();
 			if (git.isEmpty()) {
 				git = "未知";
 			}
