@@ -10,12 +10,32 @@ gogui是个Java的应用程序。
 
 ## 2. 发送命令name
 
-参考：[Ginkgo#1](Ginkgo.html) 和 [Ginkgo#1.1](Ginkgo.html)
+参考：[Ginkgo#2](Ginkgo.html) 和 [Ginkgo#2.1](Ginkgo.html)
 
 ## 3. 发送命令protocol_version
 
-参考：[Ginkgo#1](Ginkgo.html) 和 [Ginkgo#1.2](Ginkgo.html)
+参考：[Ginkgo#2](Ginkgo.html) 和 [Ginkgo#2.2](Ginkgo.html)
 
 ## 4. 发送命令version
 
-参考：[Ginkgo#1](Ginkgo.html) 和 [Ginkgo#1.3](Ginkgo.html)
+参考：[Ginkgo#2](Ginkgo.html) 和 [Ginkgo#2.3](Ginkgo.html)
+
+## 5. 发送命令list_commands
+
+参考：[Ginkgo#2](Ginkgo.html) 和 [Ginkgo#2.4](Ginkgo.html)
+
+## 6. 发出命令gogui-analyze_commands
+
+参考：[Ginkgo#2](Ginkgo.html) 和 [Ginkgo#2.5](Ginkgo.html)
+
+## 7. 发出命令boardsize 19
+
+参考：[Ginkgo#2](Ginkgo.html) 和 [Ginkgo#2.6](Ginkgo.html)
+
+## 8. 发出命令clear_board
+
+参考：[Ginkgo#2](Ginkgo.html) 和 [Ginkgo#2.7](Ginkgo.html)
+
+## 9. 发出命令komi 6.5
+
+参考：[Ginkgo#2](Ginkgo.html) 和 [Ginkgo#2.8](Ginkgo.html)
