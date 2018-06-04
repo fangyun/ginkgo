@@ -16,7 +16,6 @@ import com.github.fangyun.ginkgo.core.CoordinateSystem;
 
 /** 解析SGF文件. */
 public final class SgfParser {
-	@SuppressWarnings("boxing")
 	public static void main(String[] args) {
 		final SgfParser parser = new SgfParser(CoordinateSystem.forWidth(19), true);
 		final List<List<Short>> games = parser.parseGamesFromFile(new File("sgf-test-files/19/1977-02-27.sgf"), 179);
@@ -118,7 +117,6 @@ public final class SgfParser {
 	 *            查看多少落子，没有限制则使用Integer.MAX_VALUE;
 	 * @return 落子的列表 (以shorts).
 	 */
-	@SuppressWarnings("boxing")
 	private List<Short> parseGame(StringTokenizer stoken, int maxBookDepth) {
 		final List<Short> game = new ArrayList<>();
 		int turn = 0;

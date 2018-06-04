@@ -4,6 +4,7 @@ import static java.lang.Math.abs;
 
 import java.io.Serializable;
 
+import com.github.fangyun.ginkgo.experiment.Logging;
 import com.github.fangyun.ginkgo.mcts.CopiableStructure;
 import com.github.fangyun.ginkgo.thirdparty.MersenneTwisterFast;
 

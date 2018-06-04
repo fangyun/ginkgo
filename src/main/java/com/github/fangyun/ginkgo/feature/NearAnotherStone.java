@@ -5,7 +5,7 @@ import static com.github.fangyun.ginkgo.core.NonStoneColor.VACANT;
 import com.github.fangyun.ginkgo.core.Board;
 import com.github.fangyun.ginkgo.core.CoordinateSystem;
 
-/** True 如果p是“接近”另一棋子，例如，在一个大飞的落子中. */
+/** True 如果p是“接近”另一棋子，例如，在一个大飞的着子中. */
 public final class NearAnotherStone implements Predicate {
 	private static final long serialVersionUID = 5221893898977649012L;
 
@@ -24,7 +24,7 @@ public final class NearAnotherStone implements Predicate {
 			{ -3, 1 }, { -1, 3 }, { 1, 3 } };
 
 	/**
-	 * 返回一个包含在一个大飞落子中的所有棋盘点坐标的数组.
+	 * 返回一个包含在一个大飞着子中的所有棋盘点坐标的数组.
 	 */
 	private static short[] findNeighborhood(short p, CoordinateSystem coords) {
 		final int r = coords.row(p), c = coords.column(p);

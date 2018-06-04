@@ -11,7 +11,6 @@ import com.github.fangyun.ginkgo.time.UniformTimeManager;
 import static com.github.fangyun.ginkgo.experiment.Logging.log;
 
 /** 构建一个棋手. */
-@SuppressWarnings("hiding")
 public final class PlayerBuilder {
 
 	private int biasDelay;

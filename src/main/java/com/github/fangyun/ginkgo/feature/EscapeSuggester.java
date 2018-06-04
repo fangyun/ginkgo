@@ -10,7 +10,7 @@ import com.github.fangyun.ginkgo.core.StoneColor;
 import com.github.fangyun.ginkgo.util.ShortSet;
 
 /**
- * 返回一组落子，允许通过逃跑、合并或吃子的组合来从打吃中逃脱。不能避免倒扑.
+ * 返回一组着子，允许通过逃跑、合并或吃子的组合来从打吃中逃脱。不能避免倒扑.
  */
 public final class EscapeSuggester implements Suggester {
 	private static final long serialVersionUID = 2046806007963681312L;
@@ -24,7 +24,7 @@ public final class EscapeSuggester implements Suggester {
 	private final CoordinateSystem coords;
 
 	/**
-	 * 当前棋手的所有落子的列表将允许一个组从打吃中逃脱
+	 * 当前棋手的所有着子的列表将允许一个组从打吃中逃脱
 	 */
 	private final ShortSet movesToEscape;
 
@@ -48,7 +48,7 @@ public final class EscapeSuggester implements Suggester {
 	}
 
 	/**
-	 * 通过吃外部对手的棋子，发现可以从打吃中逃脱的落子。不能避免倒扑。任何这样的落子都被添加到movesToEscape.
+	 * 通过吃外部对手的棋子，发现可以从打吃中逃脱的着子。不能避免倒扑。任何这样的着子都被添加到movesToEscape.
 	 *
 	 * @param chain
 	 *            在打吃中的己方链.
@@ -73,7 +73,7 @@ public final class EscapeSuggester implements Suggester {
 	}
 
 	/**
-	 * 通过与其他链的合并，发现逃脱打吃的落子. 任何这样的落子都被添加到movesToEscape.
+	 * 通过与其他链的合并，发现逃脱打吃的着子. 任何这样的着子都被添加到movesToEscape.
 	 *
 	 * @param liberty
 	 *            在打吃中的当前链的气.

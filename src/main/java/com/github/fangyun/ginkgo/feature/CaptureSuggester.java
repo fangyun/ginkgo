@@ -3,7 +3,7 @@ package com.github.fangyun.ginkgo.feature;
 import com.github.fangyun.ginkgo.core.Board;
 import com.github.fangyun.ginkgo.util.ShortSet;
 
-/** 建议吃敌方棋子的落子. */
+/** 建议吃敌方棋子的着子. */
 public final class CaptureSuggester implements Suggester {
 	private static final long serialVersionUID = -7612549415894969828L;
 
@@ -14,7 +14,7 @@ public final class CaptureSuggester implements Suggester {
 	private final Board board;
 
 	/**
-	 * 当前棋手的所有落子的列表将会吃到棋子
+	 * 当前棋手的所有着子的列表将会吃到棋子
 	 */
 	private final ShortSet movesToCapture;
 

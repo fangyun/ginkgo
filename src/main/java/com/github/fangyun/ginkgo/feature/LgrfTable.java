@@ -16,12 +16,12 @@ public final class LgrfTable implements Serializable {
 	private static final long serialVersionUID = 5216955850220022701L;
 
 	/**
-	 * 条目 [c][i] 是落子i对颜色c最好的回复(或者NO_POINT，如果没有).
+	 * 条目 [c][i] 是着子i对颜色c最好的回复(或者NO_POINT，如果没有).
 	 */
 	private final short[][] replies1;
 
 	/**
-	 * 条目 [c][i][j] 是落子i对颜色c最好的回复(或者NO_POINT，如果没有).
+	 * 条目 [c][i][j] 是着子i对颜色c最好的回复(或者NO_POINT，如果没有).
 	 */
 	private final short[][][] replies2;
 
@@ -42,14 +42,14 @@ public final class LgrfTable implements Serializable {
 	}
 
 	/**
-	 * 返回上一落子对颜色c最好存储的回复.或者NO_POINT，如果没有
+	 * 返回上一着子对颜色c最好存储的回复.或者NO_POINT，如果没有
 	 */
 	public short getFirstLevelReply(Color color, short previousMove) {
 		return replies1[color.index()][previousMove];
 	}
 
 	/**
-	 * 返回上连续两次落子对颜色c最好存储的回复.或者NO_POINT，如果没有.
+	 * 返回上连续两次着子对颜色c最好存储的回复.或者NO_POINT，如果没有.
 	 */
 	public short getSecondLevelReply(Color color, short penultimateMove, short previousMove) {
 		return replies2[color.index()][penultimateMove][previousMove];

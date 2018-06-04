@@ -1,9 +1,10 @@
 package com.github.fangyun.ginkgo.mcts;
 
-import static com.github.fangyun.ginkgo.experiment.Logging.*;
 import static com.github.fangyun.ginkgo.core.CoordinateSystem.NO_POINT;
 import static com.github.fangyun.ginkgo.core.CoordinateSystem.PASS;
 import static com.github.fangyun.ginkgo.core.CoordinateSystem.RESIGN;
+import static com.github.fangyun.ginkgo.experiment.Logging.log;
+
 import com.github.fangyun.ginkgo.core.Board;
 import com.github.fangyun.ginkgo.thirdparty.MersenneTwisterFast;
 import com.github.fangyun.ginkgo.util.ShortList;
@@ -39,9 +40,7 @@ public abstract class AbstractDescender implements TreeDescender {
 		final SearchNode root = getRoot();
 		do {
 			mostWins = root.getWins(PASS);
-			// If the move chosen on the previous pass through this loop was
-			// illegal (e.g., because it was never actually tried in a playout),
-			// throw it out
+			// 如果在前一个循环中选择的移动是非法的(例如，因为它从来没有真正尝试过)，那么就把它扔掉
 			if (result != PASS) {
 				log("Rejected " + board.getCoordinateSystem().toString(result) + " as illegal");
 				root.exclude(result);
@@ -55,7 +54,7 @@ public abstract class AbstractDescender implements TreeDescender {
 				}
 			}
 		} while (result != PASS && !board.isLegal(result));
-		// Consider resigning
+		// 考虑认输
 		if (root.getWinRate(result) < RESIGN_PARAMETER) {
 			return RESIGN;
 		}
@@ -69,7 +68,7 @@ public abstract class AbstractDescender implements TreeDescender {
 		final MersenneTwisterFast random = runnable.getRandom();
 		short result = node.getWinningMove();
 		if (result != NO_POINT && runnableBoard.isLegal(result)) {
-			// The isLegal() check is necessary to avoid superko violations
+			// 为了避免违反superko规则，需要进行isLegal()检查
 			return result;
 		}
 		float bestSearchValue = searchValue(node, PASS);
@@ -89,32 +88,6 @@ public abstract class AbstractDescender implements TreeDescender {
 				}
 			}
 		} 
-		
-		
-//		
-//		
-//		final ShortSet vacantPoints = runnableBoard.getVacantPoints();
-//		
-//		
-//		int start;
-//		start = random.nextInt(vacantPoints.size());
-//		int i = start;
-//		final int skip = PRIMES[random.nextInt(PRIMES.length)];
-//		do {
-//			final short move = vacantPoints.get(i);
-//			final float searchValue = searchValue(node, move);
-//			if (searchValue > bestSearchValue) {
-//				if (runnable.isFeasible(move) && runnableBoard.isLegal(move)) {
-//					bestSearchValue = searchValue;
-//					result = move;
-//				} else {
-//					node.exclude(move);
-//				}
-//			}
-//			// Advancing by a random prime skips through the array
-//			// in a manner analogous to double hashing.
-//			i = (i + skip) % vacantPoints.size();
-//		} while (i != start);
 		return result;
 	}
 

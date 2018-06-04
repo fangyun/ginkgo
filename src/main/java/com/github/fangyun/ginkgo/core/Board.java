@@ -121,7 +121,7 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 处理空棋串毗邻当前着子点p，或者杀棋、或者减少气数.
+	 * 处理敌方棋串毗邻当前着子点p，或者杀棋、或者减少气数.
 	 */
 	private void adjustEnemyNeighbors(short p) {
 		capturedStones.clear();
@@ -140,7 +140,7 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 处理己方邻居毗邻刚着子点p，必要时合并棋串.
+	 * 处理己方棋串毗邻刚着子点p，必要时合并棋串.
 	 */
 	private void adjustFriendlyNeighbors(short p) {
 		if (friendlyNeighboringChainIds.size() == 0) {

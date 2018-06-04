@@ -20,7 +20,7 @@ public final class LgrfSuggester implements Suggester {
 	private final Predicate filter;
 	
 	/**
-	 * 因为所有的McRunnables共享同一LgrfSuggesters，所以此表是瞬变的.（TODO: volatile?)
+	 * 因为所有的McRunnables共享同一LgrfSuggesters，所以此表是瞬变的.
 	 */
 	private transient LgrfTable table;
 	

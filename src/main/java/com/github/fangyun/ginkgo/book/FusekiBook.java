@@ -9,7 +9,7 @@ import com.github.fangyun.ginkgo.core.Board;
 import com.github.fangyun.ginkgo.core.CoordinateSystem;
 
 /**
- * 产生落子来自强大的棋手棋谱.
+ * 产生着子来自强大的棋手棋谱.
  * 
  * @see FusekiBookBuilder
  */

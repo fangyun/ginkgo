@@ -39,16 +39,16 @@ public final class McRunnable implements Runnable {
 	/** @see #getFancyHashes() */
 	private final long[] fancyHashes;
 
-	/** 没通过此过滤棋的落子不能下子. */
+	/** 没通过此过滤棋的着子不能下子. */
 	private final Predicate filter;
 
-	/** 跟踪落子. */
+	/** 跟踪着子. */
 	private final HistoryObserver historyObserver;
 
-	/** 落子计数为了快速结束棋局. */
+	/** 着子计数为了快速结束棋局. */
 	private final StoneCountObserver mercyObserver;
 
-	/** 产生超出树的落子. */
+	/** 产生超出树的着子. */
 	private final Mover mover;
 
 	/**
@@ -155,7 +155,7 @@ public final class McRunnable implements Runnable {
 	}
 
 	/**
-	 * @return 已有落子
+	 * @return 已有着子
 	 */
 	public ShortSet getPlayedPoints() {
 		return playedPoints;
@@ -192,7 +192,7 @@ public final class McRunnable implements Runnable {
 	}
 
 	/**
-	 * 执行单次Monte Carlo运算然后合并到棋手的搜索树中. 棋手应当产生落子到已知树的前端，后返回. McRunnable执行实际超越树的棋局,
+	 * 执行单次Monte Carlo运算然后合并到棋手的搜索树中. 棋手应当产生着子到已知树的前端，后返回. McRunnable执行实际超越树的棋局,
 	 * 再调用棋手的incorporateRun方法.
 	 *
 	 * @return 胜方颜色，尽管只是为测试用.
@@ -220,7 +220,7 @@ public final class McRunnable implements Runnable {
 	}
 
 	/**
-	 * 落子到棋局终止，返回胜方: BLACK, WHITE,或 (很少的平局或取消棋局因为达到最大落子数) VACANT.
+	 * 着子到棋局终止，返回胜方: BLACK, WHITE,或 (很少的平局或取消棋局因为达到最大着子数) VACANT.
 	 * 
 	 * @param mercy
 	 *            true，如果在一种棋色远多于另一种棋色时，我们放弃棋局.
@@ -295,7 +295,7 @@ public final class McRunnable implements Runnable {
 	}
 
 	/**
-	 * 返回临时存储的候选落子，以备随机选择.
+	 * 返回临时存储的候选着子，以备随机选择.
 	 */
 	public ShortList getCandidates() {
 		return candidates;

@@ -8,7 +8,7 @@ import com.github.fangyun.ginkgo.feature.Suggester;
 import com.github.fangyun.ginkgo.thirdparty.MersenneTwisterFast;
 import com.github.fangyun.ginkgo.util.ShortList;
 
-/** 这是一些建议器的建议落子. */
+/** 这是一些建议器的建议着子. */
 public final class SuggesterMover implements Mover {
 	private static final long serialVersionUID = 1225709546835053009L;
 
@@ -16,14 +16,14 @@ public final class SuggesterMover implements Mover {
 
 	private final ShortList candidates;
 
-	/** 如果建议器什么都不提，那就回到这个落子上. */
+	/** 如果建议器什么都不提，那就回到这个着子上. */
 	private final Mover fallbackMover;
 
 	private final Suggester suggester;
 
 	/**
 	 * @param fallbackMover
-	 *           如果建议器什么都不提，那fallbackMover被要求落子.
+	 *           如果建议器什么都不提，那fallbackMover被要求着子.
 	 */
 	public SuggesterMover(Board board, Suggester suggester, Mover fallbackMover) {
 		this.board = board;

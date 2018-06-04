@@ -11,7 +11,7 @@ import com.github.fangyun.ginkgo.util.BitVector;
 import com.github.fangyun.ginkgo.util.ShortSet;
 
 /**
- * 建议落子匹配“好”模式与上一个落子的正交或成对角线.
+ * 建议着子匹配“好”模式与上一个着子的正交或成对角线.
  *
  * @see com.github.fangyun.ginkgo.patterns.PatternExtractor
  */
