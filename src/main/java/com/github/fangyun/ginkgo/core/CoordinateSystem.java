@@ -54,7 +54,7 @@ public final class CoordinateSystem implements Serializable {
 	/** 给getNeighbors返回的数组下标. */
 	public static final int NORTH_NEIGHBOR = 0;
 
-	/** Index into an array returned by getNeighbors. */
+	/** 给getNeighbors返回的数组下标. */
 	public static final int NORTHEAST_NEIGHBOR = 5;
 
 	/** 给getNeighbors返回的数组下标. */
@@ -225,7 +225,8 @@ public final class CoordinateSystem implements Serializable {
 	}
 
 	/**
-	 * 返回每棋局最大落子数目. 很少有实际棋局下到这个数目, 但一次棋局（不检查大劫）可能落子到此.通过这种方式来检查切断不寻常的落子要快于检查棋局中大劫.
+	 * 返回每棋局最大落子数目. 很少有实际棋局下到这个数目, 但一次棋局（不检查大劫）可能落子到此.
+	 * 通过这种方式来检查切断不寻常的落子要快于检查棋局中大劫.
 	 */
 	public short getMaxMovesPerGame() {
 		return maxMovesPerGame;

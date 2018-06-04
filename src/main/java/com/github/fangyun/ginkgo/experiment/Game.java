@@ -66,7 +66,7 @@ final class Game {
 	private State state;
 
 	/**
-	 * 棋手被要求落子的系统时间（毫秒）. 用来计算每位棋手的下棋用时.
+	 * 棋手被要求着子的系统时间（毫秒）. 用来计算每位棋手的下棋用时.
 	 */
 	private long timeLastMoveWasRequested;
 
@@ -154,7 +154,7 @@ final class Game {
 	/**
 	 * 处理给定棋子颜色的棋手的响应行.
 	 *
-	 * 方法开始设置状态为正在处理的行为.例如，如果状态是REQUESTING_MOVE, 我们正在处理落子响应我们的请求.
+	 * 方法开始设置状态为正在处理的行为.例如，如果状态是REQUESTING_MOVE, 我们正在处理着子响应我们的请求.
 	 *
 	 * @param line
 	 *            被处理的响应行.
@@ -167,13 +167,13 @@ final class Game {
 		if (line.startsWith("=")) {
 			if (state == REQUESTING_MOVE) {
 				final String move = line.substring(line.indexOf(' ') + 1);
-				System.err.println(hashCode() + " 棋局收到落子 " + move);
+				System.err.println(hashCode() + " 棋局收到着子 " + move);
 				if (!writeMoveToSgf(move)) {
 					return false;
 				}
 				final Legality legality = board.play(move);
 				if (legality != OK) {
-					die(line, s, "非法落子: " + legality);
+					die(line, s, "非法着子: " + legality);
 				}
 				if (board.getPasses() == 2) {
 					winner = scorer.winner();
@@ -229,15 +229,15 @@ final class Game {
 			System.exit(1);
 		}
 		if (winner == OFF_BOARD) {
-			System.err.println("Winner was off board.\n" + board.toString()); // TODO
+			System.err.println("赢方离开了棋盘.\n" + board.toString()); // TODO
 		}
 		return winner;
 	}
 
-	/** 发送落子请求给棋手. */
+	/** 发送着子请求给棋手. */
 	private void sendMoveRequest() {
 		final StoneColor c = getColorToPlay();
-		System.err.println(hashCode() + " 正在发送落子请求给棋色 " + c);
+		System.err.println(hashCode() + " 正在发送着子请求给棋色 " + c);
 		toPrograms[c.index()].println("genmove " + c);
 		toPrograms[c.index()].flush();
 		timeLastMoveWasRequested = System.currentTimeMillis();
@@ -253,11 +253,11 @@ final class Game {
 	}
 
 	/**
-	 * 发送落子给其它棋手. 根据棋局的时间是否保持, 状态设置为SENDING_MOVE
-	 * (因为会发送落子和剩余时间消息)或者SENDING_TIME_LEFT (因为只发送落子，并把剩余时间消息作为应答).
+	 * 发送着子给其它棋手. 根据棋局的时间是否保持, 状态设置为SENDING_MOVE
+	 * (因为会发送着子和剩余时间消息)或者SENDING_TIME_LEFT (因为只发送着子，并把剩余时间消息作为应答).
 	 */
 	private void sendToOtherPlayer(final String move) {
-		System.err.println(hashCode() + " 正发送落子给其它棋手 (" + getColorToPlay() + ")");
+		System.err.println(hashCode() + " 正发送着子给其它棋手 (" + getColorToPlay() + ")");
 		if (rules.time > 0) {
 			state = SENDING_MOVE;
 		} else {
@@ -289,9 +289,9 @@ final class Game {
 	}
 
 	/**
-	 * 写落子到输出文件. 如果棋局因为放弃或运行超时而结束, 同样设置胜方, 结束程序和完成SGF文件.
+	 * 写着子到输出文件. 如果棋局因为放弃或运行超时而结束, 同样设置胜方, 结束程序和完成SGF文件.
 	 *
-	 * @return true 如果棋局在落子之后依然继续.
+	 * @return true 如果棋局在着子之后依然继续.
 	 */
 	private boolean writeMoveToSgf(final String coordinates) {
 		String timeLeftIndicator = "";

@@ -26,8 +26,7 @@ final class PlayerListener implements Runnable {
 		try (Scanner s = new Scanner(fromProgram)) {
 			boolean finishedNormally = false;
 			while (s.hasNextLine()) {
-				// s is passed in in case there is a multi-line error message,
-				// so game can dump all of the message to the output file
+				//当出现多行错误消息时，s会传递进来，因此游戏可以将所有消息转储到输出文件。
 				final String line = s.nextLine();
 				System.err.println(game.hashCode() + " PlayerListener got line " + line);
 				if (!line.isEmpty()) {

@@ -16,19 +16,20 @@ import static com.github.fangyun.ginkgo.core.StoneColor.BLACK;
 import static com.github.fangyun.ginkgo.core.StoneColor.WHITE;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import com.github.fangyun.ginkgo.feature.BoardObserver;
 import com.github.fangyun.ginkgo.util.ShortList;
 import com.github.fangyun.ginkgo.util.ShortSet;
 
-/** 管理棋盘，检测合法下子等. */
+/** 管理棋盘，检测合法着子等. */
 public final class Board implements Serializable {
 	private static final long serialVersionUID = -4434335541051930600L;
 
 	/** 让子棋的位置. */
 	private final static String[] HANDICAP_LOCATIONS = { "d4", "q16", "q4", "d16", "k10", "d10", "q10", "k4", "k16" };
 
-	/** 被最近落子提走的棋子. */
+	/** 被最近着子提走的棋子. */
 	private final ShortList capturedStones;
 
 	/** 下步棋的棋子颜色. */
@@ -38,11 +39,11 @@ public final class Board implements Serializable {
 	private final CoordinateSystem coords;
 
 	/**
-	 * 最近落子后的对手的棋串ID，用于isSuicidal()和isSelfAtari()方法.
+	 * 最近着子后的对手的棋串ID，用于isSuicidal()和isSelfAtari()方法.
 	 */
 	private final ShortList enemyNeighboringChainIds;
 
-	/** 最近落子后己方的棋串ID. */
+	/** 最近着子后己方的棋串ID. */
 	private final ShortList friendlyNeighboringChainIds;
 
 	/**
@@ -53,14 +54,14 @@ public final class Board implements Serializable {
 	private long hash;
 
 	/**
-	 * 用于撤销落子，因此我们有一个初始化已下棋子的记录.
+	 * 用于撤销着子，因此我们有一个初始化已下棋子的记录.
 	 */
 	private final ShortSet[] initialStones;
 
 	/** 劫点. */
 	private short koPoint;
 
-	/** 刚落子的棋的直接气. */
+	/** 刚着子的棋的直接气. */
 	private final ShortSet lastPlayLiberties;
 
 	/** 刚被吃子的邻居，用在removeStone(). */
@@ -69,7 +70,7 @@ public final class Board implements Serializable {
 	/** 棋盘观察者. */
 	private BoardObserver[] observers;
 
-	/** 刚落子的连续虚手数. */
+	/** 刚着子的连续虚手数. */
 	private short passes;
 
 	/** 在棋盘上的点(被哨兵点围绕). */
@@ -115,12 +116,12 @@ public final class Board implements Serializable {
 		// 断言棋盘还没有任何操作
 		assert hash == SuperKoTable.EMPTY;
 		assert turn == 0;
-		observers = java.util.Arrays.copyOf(observers, observers.length + 1);
+		observers = Arrays.copyOf(observers, observers.length + 1);
 		observers[observers.length - 1] = observer;
 	}
 
 	/**
-	 * 处理空棋串毗邻当前落子点p，或者杀棋、或者减少气数.
+	 * 处理空棋串毗邻当前着子点p，或者杀棋、或者减少气数.
 	 */
 	private void adjustEnemyNeighbors(short p) {
 		capturedStones.clear();
@@ -139,7 +140,7 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 处理己方邻居毗邻刚落子点p，必要时合并棋串.
+	 * 处理己方邻居毗邻刚着子点p，必要时合并棋串.
 	 */
 	private void adjustFriendlyNeighbors(short p) {
 		if (friendlyNeighboringChainIds.size() == 0) {
@@ -150,7 +151,7 @@ public final class Board implements Serializable {
 			points[p].addToChain(points[c]);
 			points[c].liberties.addAll(lastPlayLiberties);
 			if (friendlyNeighboringChainIds.size() > 1) {
-				// If there are several friendly neighbors, merge them
+				// 如果有几个友好的邻居，就把它们合并起来
 				for (int i = 1; i < friendlyNeighboringChainIds.size(); i++) {
 					final short ally = friendlyNeighboringChainIds.get(i);
 					if (points[c].liberties.size() >= points[ally].liberties.size()) {
@@ -167,7 +168,8 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 设置棋盘为空白状态. 删除任何初始化的棋子，贴目设置为缺省值. 这粗略的等同于新建一个实例，但(a)这样更快，(b) 对棋盘的引用没有发生改变.
+	 * 设置棋盘为空白状态. 删除任何初始化的棋子，贴目设置为缺省值.
+	 * 这粗略的等同于新建一个实例，但(a)这样更快，(b) 对棋盘的引用没有发生改变.
 	 */
 	public void clear() {
 		colorToPlay = BLACK;
@@ -232,12 +234,12 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 落子后更新数据结构.
+	 * 着子后更新数据结构.
 	 *
 	 * @param color
-	 *            落子的颜色.
+	 *            着子的颜色.
 	 * @param p
-	 *            落子的位置.
+	 *            着子的位置.
 	 */
 	private void finalizePlay(StoneColor color, short p) {
 		final int lastVacantPointCount = vacantPoints.size();
@@ -272,7 +274,7 @@ public final class Board implements Serializable {
 		return points[p].color;
 	}
 
-	/** 返回下一步落子的棋的颜色. */
+	/** 返回下一步着子的棋的颜色. */
 	public StoneColor getColorToPlay() {
 		return colorToPlay;
 	}
@@ -283,7 +285,7 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 返回当前棋盘位置的Zobrist哈希, 合并简单劫点和落子颜色。这用在转换表中.
+	 * 返回当前棋盘位置的Zobrist哈希, 合并简单劫点和着子颜色。这用在转换表中.
 	 */
 	public long getFancyHash() {
 		long result = hash;
@@ -293,8 +295,7 @@ public final class Board implements Serializable {
 		if (colorToPlay == WHITE) {
 			result = ~result;
 		}
-		// We don't believe we need to take the number of passes into account,
-		// because we would never look at or store data in an end-of-game node.
+		// 我们不认为我们需要考虑虚手的数量，因为我们永远不会查看或存储在对弈结束节点中的数据.
 		return result;
 	}
 
@@ -322,14 +323,14 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 返回结束落子序列后的连续虚手数.
+	 * 返回结束着子序列后的连续虚手数.
 	 */
 	public short getPasses() {
 		return passes;
 	}
 
 	/**
-	 * 返回当前落子手数 (1基).
+	 * 返回当前着子手数 (1基).
 	 */
 	public int getTurn() {
 		return turn;
@@ -346,9 +347,9 @@ public final class Board implements Serializable {
 	 * 返回如果提子后的棋盘哈希值. 用于play()中检查超级劫.
 	 *
 	 * @param color
-	 *            将要落子的棋子颜色.
+	 *            将要着子的棋子颜色.
 	 * @param p
-	 *            将要落子的位置.
+	 *            将要着子的位置.
 	 */
 	private long hashAfterRemovingCapturedStones(StoneColor color, short p) {
 		long result = hash;
@@ -375,7 +376,7 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 如果落子p合法（在棋盘上或是虚招），返回true.
+	 * 如果着子p合法（在棋盘上或是虚手），返回true.
 	 */
 	public boolean isLegal(short p) {
 		if (p == PASS) {
@@ -385,10 +386,10 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 遍历p的邻居, 查找潜在的杀棋和棋串去合并新的落子. 作为副作用，加载域，friendlyNeighboringChainIds,
+	 * 遍历p的邻居, 查找潜在的杀棋和棋串去合并新的着子. 作为副作用，加载域，friendlyNeighboringChainIds,
 	 * enemyNeighboringChainIds, 和 lastPlayLiberties, 被finalizePlay所用.
 	 *
-	 * @return true如果落子在p将是自杀.
+	 * @return true如果着子在p将是自杀.
 	 */
 	private boolean isSuicidal(StoneColor color, short p) {
 		friendlyNeighboringChainIds.clear();
@@ -416,7 +417,7 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 返回落子p的合法性. 作为副作用, 加载域、friendlyNeighboringChainIds,
+	 * 返回着子p的合法性. 作为副作用, 加载域、friendlyNeighboringChainIds,
 	 * enemyNeighboringChainIds和 lastPlayLiberties, 被finalizePlay所用.
 	 */
 	private Legality legality(StoneColor color, short p) {
@@ -441,7 +442,7 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 相似与{@link#legality}, 但不检查已下子或违反超级劫.
+	 * 相似与{@link#legality}, 但不检查已着子或违反超级劫.
 	 */
 	private Legality legalityFast(StoneColor color, short p) {
 		assert coords.isOnBoard(p);
@@ -495,19 +496,18 @@ public final class Board implements Serializable {
 
 	/** 布棋. */
 	public void placeInitialStone(StoneColor color, short p) {
-		// Initial stones will always be legal, but the legality method
-		// also sets up some fields called by finalizePlay.
+		// 最初的棋子将永远是合法的，但是合法的方法也设置了一些被finalizePlay调用的字段。
 		legality(color, p);
 		finalizePlay(color, p);
 		initialStones[color.index()].add(p);
 		hash = proposedHash;
 		superKoTable.add(hash);
-		// To ensure that the board is in a stable state, this must be done last
+		// 为了确保棋盘处于一个稳定的状态，这必须在最后完成。
 		notifyObservers(color, p);
 	}
 
 	/**
-	 * 落子。如果不合法,则没有副作用. 返回落子的合法性.
+	 * 着子。如果不合法,则没有副作用. 返回着子的合法性.
 	 */
 	public Legality play(short p) {
 		if (p == PASS) {
@@ -530,7 +530,7 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 使用可读字符串（例如"c4" or "pass"）的落子方便方法,
+	 * 使用可读字符串（例如"c4" or "pass"）的着子方便方法,
 	 *
 	 * @see #play(short)
 	 */
@@ -539,7 +539,7 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 相似与落子，但假定p点在棋盘上且没出现过. 不维护哈希值，也不检查超级劫.
+	 * 相似与着子，但假定p点在棋盘上且没出现过. 不维护哈希值，也不检查超级劫.
 	 */
 	public Legality playFast(short p) {
 		final Legality result = legalityFast(colorToPlay, p);
@@ -550,8 +550,7 @@ public final class Board implements Serializable {
 		colorToPlay = colorToPlay.opposite();
 		passes = 0;
 		turn++;
-		// To ensure that the board is in a stable state, this must be done last
-		// The color argument is flipped back to the color of the stone played
+		// 为了确保棋盘处于稳定状态，这调用必须是最后一步，且棋色的参数是被转换回的棋子颜色
 		notifyObservers(colorToPlay.opposite(), p);
 		return OK;
 	}
@@ -577,14 +576,14 @@ public final class Board implements Serializable {
 	}
 
 	/**
-	 * 设置将要落子棋的颜色, 用在像GoGui中初始化棋子.
+	 * 设置将要着子棋的颜色, 用在像GoGui中初始化棋子.
 	 */
 	public void setColorToPlay(StoneColor stoneColor) {
 		colorToPlay = stoneColor;
 	}
 
 	/**
-	 * 设置连续虚手的数目。不调整观察者. (这用在特殊的超越棋局的落子来决定棋子哪些还活着.)
+	 * 设置连续虚手的数目。不调整观察者. (这用在特殊的超越棋局的着子来决定棋子哪些还活着.)
 	 */
 	public void setPasses(short passes) {
 		this.passes = passes;

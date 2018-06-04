@@ -4,7 +4,7 @@
 
 * 构造Ginkgo实例
 * 调用Ginkgo实例的run方法
-* 在run方法中处理命令。参考2.
+  * 在run方法中处理命令。参考2.
 
 ### 1.1 构造Ginkgo实例
 
@@ -59,11 +59,12 @@ git --git-dir=$WorkDir/.git --work-tree=$WorkDir log --pretty=format:'%H' -n 1
 
 ### 2.7 处理命令clear_board
 
-- 调用[player](Player.html).clear()清洗下
+- 调用[player](Player.html).clear()清理下
 - 应答空串
 
 ### 2.8 处理命令komi 6.5
 
-* 如果和已有的贴目值一致，则调用[player](Player.html).clear()清洗下
+* 如果和已有的贴目值一致，则调用[player](Player.html).clear()清理下
 * 否则，设置playerBuilder的状态komi为新值，重新构建player
 * 应答空串
+

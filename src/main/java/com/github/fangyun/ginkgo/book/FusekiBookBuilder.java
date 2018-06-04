@@ -18,12 +18,12 @@ import com.github.fangyun.ginkgo.sgf.SgfParser;
 import com.github.fangyun.ginkgo.book.SmallHashMap;
 
 /**
- * 构建布局书从(可能嵌套)SGF文件目录. 首先处理数据产生初略书, 然后处理创建为FusekiBook的最终书.
+ * 构建布局棋谱从(可能嵌套)SGF文件目录. 首先处理数据产生初略棋谱, 然后处理创建为FusekiBook的最终棋谱.
  */
 public final class FusekiBookBuilder {
 
 	/**
-	 * 在和低于这个响应数, 存储响应为列表. 高于此，存储为响应的频率(落子为索引).
+	 * 在和低于这个响应数, 存储响应为列表. 高于此，存储为响应的频率(着子为索引).
 	 */
 	public static final int MEDIUM_ARRAY_LIMIT = 50;
 
@@ -37,7 +37,7 @@ public final class FusekiBookBuilder {
 	}
 
 	/**
-	 * 映射棋盘哈希值到short数组. 或者中型数组(响应棋盘的落子列表)或者长数组(响应棋盘的多少次每个落子的计数).
+	 * 映射棋盘哈希值到short数组. 或者中型数组(响应棋盘的着子列表)或者长数组(响应棋盘的多少次每个着子的计数).
 	 */
 	private BigHashMap<short[]> bigMap;
 
@@ -47,14 +47,14 @@ public final class FusekiBookBuilder {
 	private final CoordinateSystem coords;
 
 	/**
-	 * 当落子至少这多次时，此落子才被存储在最终的map中.
+	 * 当着子至少这多次时，此着子才被存储在最终的map中.
 	 */
 	private final int countThreshold;
 
 	/** 写出到输出文件中的对象. */
 	private final SmallHashMap finalMap;
 
-	/** 棋局中在和超过此深度的落子被忽略. */
+	/** 棋局中在和超过此深度的着子被忽略. */
 	private final int maxMoves;
 
 	/** 目录存储粗略和最终的棋谱. */
@@ -69,8 +69,7 @@ public final class FusekiBookBuilder {
 	private final boolean verbose;
 
 	public FusekiBookBuilder(int maxMoves, int countThreshold, String directoryName, boolean verbose) {
-		// If countThreshold were 1, we'd have to look in smallMap in
-		// buildFinalBook
+		// 如果countThreshold为1，我们就必须在buildFinalBook中查找smallMap。
 		assert countThreshold > 1;
 		smallMap = new SmallHashMap();
 		bigMap = new BigHashMap<>();
@@ -108,7 +107,7 @@ public final class FusekiBookBuilder {
 	}
 
 	/**
-	 * 查找大约等于countThreshold的最常见落子，否则，返回NO_POINT.
+	 * 查找大约等于countThreshold的最常见着子，否则，返回NO_POINT.
 	 */
 	private short findHighest(short[] counts) {
 		short winner = CoordinateSystem.NO_POINT;
@@ -148,7 +147,6 @@ public final class FusekiBookBuilder {
 					finalMap.put(boardHash, move);
 				}
 			}
-
 		}
 	}
 
@@ -170,7 +168,7 @@ public final class FusekiBookBuilder {
 		}
 	}
 
-	/** 处理棋局中的落子，更新bigMap和smallMap. */
+	/** 处理棋局中的着子，更新bigMap和smallMap. */
 	private void processGame(List<Short> game) {
 		final short[] transformations = new short[8];
 		for (final short move : game) {
@@ -200,15 +198,14 @@ public final class FusekiBookBuilder {
 	}
 
 	/**
-	 * 分析落子作为fancyHash的响应, 更新bigMap和smallMap.
+	 * 分析着子作为fancyHash的响应, 更新bigMap和smallMap.
 	 */
 	private void processMove(short move, long fancyHash) {
 		if (bigMap.containsKey(fancyHash)) {
-			// The entry in bigMap is either a list of moves (medium) or a
-			// move-indexed array of counts
+			// bigMap中的条目要么是一个着子列表(中型)，要么是一个计数的着子索引数组。
 			final short[] array = bigMap.get(fancyHash);
 			if (array.length < MEDIUM_ARRAY_LIMIT) {
-				// It's medium, but there's room to make it larger
+				// 它是中等的，但是有空间让它变大
 				final short[] temp = new short[array.length + 1];
 				for (int i = 0; i < array.length; i++) {
 					temp[i] = array[i];
@@ -216,7 +213,7 @@ public final class FusekiBookBuilder {
 				temp[temp.length - 1] = move;
 				bigMap.put(fancyHash, temp);
 			} else if (array.length == MEDIUM_ARRAY_LIMIT) {
-				// It has hit the medium size limit; convert it to large
+				// 它达到了中等大小的极限;把它转换成大
 				final short[] temp = new short[coords.getFirstPointBeyondBoard()];
 				for (int i = 0; i < array.length; i++) {
 					temp[array[i]]++;
@@ -224,25 +221,25 @@ public final class FusekiBookBuilder {
 				temp[move]++;
 				bigMap.put(fancyHash, temp);
 			} else {
-				// It's already large; just increment a count
+				// 它已经大;只是增加一个计数
 				array[move]++;
 				if (array[move] < 0) {
 					array[move] = Short.MAX_VALUE;
 				}
 			}
 		} else if (smallMap.containsKey(fancyHash)) {
-			// We've seen this hash once before; move from small to medium
+			// 我们以前见过这个哈希;变小到中。
 			final short[] temp = new short[2];
 			temp[0] = smallMap.get(fancyHash);
 			temp[1] = move;
 			bigMap.put(fancyHash, temp);
 		} else {
-			// First time we've seen this hash; add to small map
+			// 我们第一次看到这个散列;添加到smallmap
 			smallMap.put(fancyHash, move);
 		}
 	}
 
-	/** 返回落子在线c=r的镜像点. */
+	/** 返回着子在线c=r的镜像点. */
 	public short reflect(short move) {
 		final int row = coords.row(move);
 		final int col = coords.column(move);
@@ -252,7 +249,7 @@ public final class FusekiBookBuilder {
 		return p;
 	}
 
-	/** 返回落子反时针旋转90度的点. */
+	/** 返回着子反时针旋转90度的点. */
 	public short rotate90(short move) {
 		final int row = coords.row(move);
 		final int col = coords.column(move);

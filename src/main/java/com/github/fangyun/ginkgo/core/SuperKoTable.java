@@ -1,6 +1,7 @@
 package com.github.fangyun.ginkgo.core;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * 佐布里斯特哈希的集合，存储以前棋盘位置. 这是一个哈希表，但是没有java.util.HashSet的限制.
@@ -47,7 +48,7 @@ public final class SuperKoTable implements Serializable {
 
 	/** 从哈希表中删除所有元素. */
 	public void clear() {
-		java.util.Arrays.fill(data, EMPTY);
+		Arrays.fill(data, EMPTY);
 	}
 
 	/** 返回true如果key在哈希表中. */

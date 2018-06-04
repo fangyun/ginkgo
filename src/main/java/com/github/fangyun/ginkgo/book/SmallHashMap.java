@@ -66,7 +66,7 @@ public final class SmallHashMap implements Serializable {
 	public void put(long key, short value) {
 		assert value != NO_POINT;
 		size++;
-		// The maximum load factor is 0.5
+		// 最大负荷系数为0.5
 		if (size > keys.length / 2) {
 			rehash();
 		}
@@ -79,7 +79,7 @@ public final class SmallHashMap implements Serializable {
 	private void putAfterTableKnownLargeEnough(long key, short value) {
 		int slot = ((int) key & IGNORE_SIGN_BIT) % keys.length;
 		while (true) {
-			// If this map already has the value, it doesn't do anything.
+			// 如果这个映射已经有了值，它就什么都不做了。
 			if (keys[slot] == key && values[slot] != NO_POINT) {
 				return;
 			} else if (values[slot] == NO_POINT) {

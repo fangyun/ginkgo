@@ -88,7 +88,7 @@ final class Point implements Serializable {
 		}
 	}
 
-	/** 增加落子到棋串中. */
+	/** 增加着子到棋串中. */
 	void addToChain(Point chain) {
 		chainNextPoint = chain.chainNextPoint;
 		chain.chainNextPoint = index;
@@ -108,7 +108,7 @@ final class Point implements Serializable {
 	}
 
 	/**
-	 * 返回点到初始状态.仅在刚落子的点使用.
+	 * 返回点到初始状态.仅在刚着子的点使用.
 	 */
 	void clear() {
 		liberties.clear();

@@ -25,8 +25,7 @@ public final class Logging {
 			String stamp = GameBatch.timeStamp(false);
 			logger.log(level, stamp + " thread "
 					+ Thread.currentThread().getId() + " " + message);
-			// NOTE: This won't catch long delays that happen to include
-			// midnight
+			// 注意: 这不会造成包括午夜在内的长时间延误。
 			if (previousTimeStamp != null && rawTime(stamp) - rawTime(previousTimeStamp) > 5) {
 				logger.log(level, stamp + " thread "
 						+ Thread.currentThread().getId() + " " + "LONG DELAY!");

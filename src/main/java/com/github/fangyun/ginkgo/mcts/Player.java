@@ -33,7 +33,7 @@ public final class Player {
 	private OpeningBook book;
 
 	/**
-	 * true 如果我们应到搜索对手死棋和会杀死他们的偏子.
+	 * true 如果我们要搜索对手的死棋和偏置，那就杀了他们.
 	 */
 	private boolean cleanupMode;
 
