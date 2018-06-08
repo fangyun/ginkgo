@@ -10,7 +10,7 @@ import com.github.fangyun.ginkgo.thirdparty.MersenneTwisterFast;
 import com.github.fangyun.ginkgo.util.ShortList;
 import com.github.fangyun.ginkgo.util.ShortSet;
 
-/** 总是选择最佳胜率的落子，没有任何探索. */
+/** 总是选择最佳胜率的着子，没有任何探索. */
 public abstract class AbstractDescender implements TreeDescender {
 
 	/** 如果我们的赢率低于这个，放弃. */
@@ -62,7 +62,7 @@ public abstract class AbstractDescender implements TreeDescender {
 		return result;
 	}
 
-	/** 返回棋局从这里开始最佳的落子. */
+	/** 返回棋局从这里开始最佳的着子. */
 	short bestSearchMove(SearchNode node, McRunnable runnable) {
 		final Board runnableBoard = runnable.getBoard();
 		final MersenneTwisterFast random = runnable.getRandom();

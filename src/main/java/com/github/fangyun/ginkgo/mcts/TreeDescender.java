@@ -29,7 +29,7 @@ public interface TreeDescender {
 	
 	
 	/**
-	 * 返回这个落子的搜索值, 例如., 最赢率, UCT, or RAVE.
+	 * 返回这个落子的搜索值, 例如., 最赢率, UCT或RAVE.
 	 */
 	public float searchValue(SearchNode node, short move);
 

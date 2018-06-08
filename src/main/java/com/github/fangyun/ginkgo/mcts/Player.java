@@ -71,11 +71,11 @@ public final class Player {
 	private final McRunnable[] runnables;
 
 	/**
-	 * True，如果setTimeRemaining已经被调用, 因为一个time_left被收到. 如果true，用时间管理器. 否则只用为每一落子用分配的msecPerMove.
+	 * True，如果setTimeRemaining已经被调用, 因为一个time_left被收到. 如果true，用时间管理器. 否则只用为每一着子用分配的msecPerMove.
 	 */
 	private boolean timeLeftWasSent;
 
-	/** 用来计算产生一步落子所用时间. */
+	/** 用来计算产生一步着子所用时间. */
 	private TimeManager timeManager;
 
 	private TreeUpdater updater;
@@ -104,7 +104,7 @@ public final class Player {
 		timeLeftWasSent = false;
 	}
 
-	/** 落子在点p. */
+	/** 着子在点p. */
 	public Legality acceptMove(short point) {
 		stopThreads();
 		final Legality legality = board.play(point);
@@ -116,7 +116,7 @@ public final class Player {
 		return legality;
 	}
 
-	/** 运行McRunnables一段时间，后返回最佳落子. */
+	/** 运行McRunnables一段时间，后返回最佳着子. */
 	public short bestMove() {
 		stopThreads();
 		final short move = book.nextMove(board);
@@ -198,7 +198,7 @@ public final class Player {
 		cleanupMode = false;
 	}
 
-	/** 在树中下任意落子(或其它结构). */
+	/** 在树中下任意着子(或其它结构). */
 	public void descend(McRunnable runnable) {
 		descender.descend(runnable);
 	}
@@ -214,7 +214,7 @@ public final class Player {
 	}
 
 	/**
-	 * 清除对手死链离开棋盘导致的偏置落子. 返回true，如果存在这样的落子.
+	 * 清除对手死链离开棋盘导致的偏置着子. 返回true，如果存在这样的着子.
 	 */
 	private boolean findCleanupMoves() {
 		log("Finding cleanup moves");
@@ -359,7 +359,7 @@ public final class Player {
 	}
 
 	/**
-	 * 设置将要落子的棋的棋色，用在GoGui来设置初始棋子.
+	 * 设置将要着子的棋的棋色，用在GoGui来设置初始棋子.
 	 */
 	public void setColorToPlay(StoneColor stoneColor) {
 		board.setColorToPlay(stoneColor);
@@ -372,7 +372,7 @@ public final class Player {
 		coupDeGrace = enabled;
 	}
 
-	/** 设置每次落子分配的毫秒数. */
+	/** 设置每次着子分配的毫秒数. */
 	public void setMsecPerMove(int msec) {
 		msecPerMove = msec;
 	}
@@ -408,12 +408,12 @@ public final class Player {
 		board.setUpHandicap(handicapSize);
 	}
 
-	/** 放置从SGF游戏读来的落子. */
+	/** 放置从SGF游戏读来的着子. */
 	public void setUpSgfGame(List<Short> moves) {
 		board.clear();
 		for (final Short move : moves) {
 			if (board.play(move) != OK) {
-				throw new IllegalArgumentException("SGF包含非法落子");
+				throw new IllegalArgumentException("SGF包含非法着子");
 			}
 		}
 	}
@@ -467,7 +467,7 @@ public final class Player {
 	}
 
 	/**
-	 * 撤回最后落子. 通过清理棋盘，然后重放所有落子除了最后一步.
+	 * 撤回最后着子. 通过清理棋盘，然后重放所有着子除了最后一步.
 	 * 
 	 * @return true 如果撤回成功 (例如, 不是在棋局开始).
 	 */

@@ -8,12 +8,12 @@ import com.github.fangyun.ginkgo.util.ListNode;
 public interface SearchNode {
 
 	/**
-	 * 返回可读的统计在最优落子后.
+	 * 返回可读的统计在最优着子后.
 	 */
 	public String bestWinCountReport(CoordinateSystem coords);
 
 	/**
-	 * 返回在最优落子后的赢率.
+	 * 返回在最优着子后的赢率.
 	 */
 	public short bestWinRate(CoordinateSystem coords);
 
@@ -31,7 +31,7 @@ public interface SearchNode {
 	public String deepToString(Board board, TranspositionTable table, int maxDepth);
 
 	/**
-	 * 标志落子p（例如非法落子）为可怕的, 因此它不会再次尝试.
+	 * 标志着子p（例如非法着子）为可怕的, 因此它不会再次尝试.
 	 */
 	public void exclude(short p);
 
@@ -46,28 +46,28 @@ public interface SearchNode {
 	 */
 	public long getFancyHash();
 
-	/** 返回从此点的最优落子. */
+	/** 返回从此点的最优着子. */
 	public short getMoveWithMostWins(CoordinateSystem coords);
 
-	/** 返回经过落子p运行的数目. */
+	/** 返回经过着子p运行的数目. */
 	public int getRuns(short p);
 
 	/** 返回经过此节点总计数目. */
 	public int getTotalRuns();
 
 	/**
-	 * 如果导致赢，则返回从此节点的最近的落子，否则为NO_POINT.
+	 * 如果导致赢，则返回从此节点的最近的着子，否则为NO_POINT.
 	 */
 	public short getWinningMove();
 
-	/** 返回对于落子p通过此节点的赢率. */
+	/** 返回对于着子p通过此节点的赢率. */
 	public float getWinRate(short p);
 
-	/** 返回通过落子p的赢的数. */
+	/** 返回通过着子p的赢的数. */
 	public float getWins(short p);
 
 	/**
-	 * 返回true对于那些落子通过另一个已经创建的节点.
+	 * 返回true对于那些着子通过另一个已经创建的节点.
 	 */
 	public boolean hasChild(short p);
 
@@ -87,21 +87,21 @@ public interface SearchNode {
 	public boolean isMarked();
 
 	/**
-	 * 返回从此节点的所有落子的总赢率.
+	 * 返回从此节点的所有着子的总赢率.
 	 */
 	public float overallWinRate(CoordinateSystem coords);
 
 	/**
-	 * 增加数目为从一棋局的落子序列结果.
+	 * 增加数目为从一棋局的着子序列结果.
 	 *
-	 * 注: 因为此方法不是同步，对同一个节点的两个并发调用可能导致竟跑条件影响设置赢的落子域.
+	 * 注: 因为此方法不是同步，对同一个节点的两个并发调用可能导致竟跑条件影响设置赢的着子域.
 	 *
 	 * @param winProportion
 	 *            1.0 如果在这节点是个赢的棋局，0.0反之.
 	 * @param runnable
 	 *            McRunnable响应这次运行.
 	 * @param t
-	 *            首次落子的下标(从此节点开始).
+	 *            首次着子的下标(从此节点开始).
 	 */
 	public void recordPlayout(float winProportion, McRunnable runnable, int t);
 
@@ -111,13 +111,13 @@ public interface SearchNode {
 	/** 设置此节点的子列表. */
 	public void setChildren(ListNode<SearchNode> children);
 
-	/** 表示落子p已经遍历过. */
+	/** 表示着子p已经遍历过. */
 	public void setHasChild(short p);
 
 	/** 设置节点的标识，为垃圾收集用. */
 	public void setMarked(boolean marked);
 
-	/** 设置为此节点的赢的落子. */
+	/** 设置为此节点的赢的着子. */
 	public void setWinningMove(short move);
 
 	/** 设置此节点可读形式. */
