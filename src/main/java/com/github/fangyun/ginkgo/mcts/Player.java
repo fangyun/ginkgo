@@ -134,7 +134,7 @@ public final class Player {
 			findCleanupMoves();
 		}
 		if (!timeLeftWasSent) {
-			// No time left signal was received
+			// 没有时间的信号被接收
 			startThreads();
 			try {
 				Thread.sleep(msecPerMove);
@@ -144,7 +144,7 @@ public final class Player {
 			}
 			stopThreads();
 		} else {
-			// Time left signal was received
+			// 有时间的信号被接收
 			timeManager.startNewTurn();
 			msecPerMove = timeManager.getMsec();
 			log("Allocating " + msecPerMove + " msec");

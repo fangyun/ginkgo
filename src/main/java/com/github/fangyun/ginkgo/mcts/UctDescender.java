@@ -14,7 +14,7 @@ public final class UctDescender extends AbstractDescender {
 	}
 
 	/**
-	 * 返回为节点的UCT上限。这是UCB1-TUNED的策略，在Gelly的技术报告中解释道，“在蒙特卡罗的围棋中，对UCT的修改”。这个公式在第5页的底部。
+	 * 返回为节点的UCT上限。这是UCB1-TUNED的策略，在Gelly的技术报告“Modification of UCT with Patterns in Monte-Carlo Go”中解释。这个公式在第5页的底部。
 	 */
 	@Override
 	public float searchValue(SearchNode node, short move) {
