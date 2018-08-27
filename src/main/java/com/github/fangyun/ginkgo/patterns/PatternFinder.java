@@ -16,13 +16,13 @@ import com.github.fangyun.ginkgo.core.NonStoneColor;
 
 public final class PatternFinder {
 
-	/** 对空子带2口气在POINT_HASHES的第一个下标. */
+	/** 对敌方带2口气在POINT_HASHES的第一个下标. */
 	public static final int ENEMY_2_LIBERTIES = 1;
 
-	/** 对空子带3或更多口气在POINT_HASHES的第一个下标. */
+	/** 对敌方带3或更多口气在POINT_HASHES的第一个下标. */
 	public static final int ENEMY_3_OR_MORE_LIBERTIES = 2;
 
-	/** 对打吃的空子在POINT_HASHES的第一个下标. */
+	/** 对打吃的敌方在POINT_HASHES的第一个下标. */
 	public static final int ENEMY_IN_ATARI = 0;
 
 	/** 对己方子带2口气在POINT_HASHES的第一个下标. */
@@ -34,7 +34,7 @@ public final class PatternFinder {
 	/** 对打吃的己方子在POINT_HASHES的第一个下标. */
 	public static final int FRIENDLY_IN_ATARI = 0;
 
-	/** 当最后落子是空子，则增加第一个下标在POINT_HASHES. */
+	/** 当最后落子是敌方，则增加第一个下标在POINT_HASHES. */
 	public static final int LAST_MOVE_INCREASE = 3;
 
 	/** 对棋盘外的点在POINT_HASHES的第一个下标. */

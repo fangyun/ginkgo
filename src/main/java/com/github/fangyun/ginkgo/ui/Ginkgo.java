@@ -80,7 +80,7 @@ public final class Ginkgo {
 			"gogui-analyze_commands", "gogui-get-wins", "gogui-search-values", "known_command", "kgs-game_over",
 			"kgs-genmove_cleanup", "komi", "list_commands", "loadsgf", "name", "play", "playout_count",
 			"protocol_version", "quit", "reg_genmove", "showboard", "time_left", "time_settings", "undo", "version",
-			"white", };
+			"white"};
 
 	public static void main(String[] args) throws IOException {
 		new Ginkgo(args).run();

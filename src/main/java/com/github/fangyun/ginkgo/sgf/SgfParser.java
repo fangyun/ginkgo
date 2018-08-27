@@ -1,6 +1,9 @@
 package com.github.fangyun.ginkgo.sgf;
 
 import static com.github.fangyun.ginkgo.core.CoordinateSystem.PASS;
+import static com.github.fangyun.ginkgo.core.StoneColor.BLACK;
+import static com.github.fangyun.ginkgo.core.StoneColor.WHITE;
+import static java.lang.Integer.MAX_VALUE;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,8 +12,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-import static com.github.fangyun.ginkgo.core.StoneColor.*;
-import static java.lang.Integer.MAX_VALUE;
 import com.github.fangyun.ginkgo.core.Board;
 import com.github.fangyun.ginkgo.core.CoordinateSystem;
 
@@ -18,7 +19,8 @@ import com.github.fangyun.ginkgo.core.CoordinateSystem;
 public final class SgfParser {
 	public static void main(String[] args) {
 		final SgfParser parser = new SgfParser(CoordinateSystem.forWidth(19), true);
-		final List<List<Short>> games = parser.parseGamesFromFile(new File("sgf-test-files/19/1977-02-27.sgf"), 179);
+		final List<List<Short>> games = parser
+				.parseGamesFromFile(new File("src/main/resources/sgf-test-files/19/print1.sgf"), MAX_VALUE);
 		for (final List<Short> game : games) {
 			for (final Short move : game) {
 				System.out.println(parser.coords.toString(move));
@@ -38,10 +40,8 @@ public final class SgfParser {
 	/**
 	 * 从sgf文件构建棋盘. 使用placeInitialStone()处理AB和AW命令,使用play()处理B和W命令.
 	 * 
-	 * @param filepath
-	 *            sgf文件名.
-	 * @param board
-	 *            sgf文件覆盖的棋盘.
+	 * @param filepath sgf文件名.
+	 * @param board    sgf文件覆盖的棋盘.
 	 */
 	public void sgfToBoard(String filepath, Board board) {
 		if (!filepath.toLowerCase().endsWith(".sgf")) {
@@ -55,10 +55,8 @@ public final class SgfParser {
 	/**
 	 * 从sgf文件构建棋盘. 使用placeInitialStone()处理AB和AW命令,使用play()处理B和W命令.
 	 * 
-	 * @param file
-	 *            sgf文件.
-	 * @param board
-	 *            sgf文件覆盖的棋盘.
+	 * @param file  sgf文件.
+	 * @param board sgf文件覆盖的棋盘.
 	 */
 	public void sgfToBoard(File file, Board board) {
 		board.clear();
@@ -113,8 +111,7 @@ public final class SgfParser {
 	/**
 	 * 从StringTokenizer中解析落子.
 	 * 
-	 * @param maxBookDepth
-	 *            查看多少落子，没有限制则使用Integer.MAX_VALUE;
+	 * @param maxBookDepth 查看多少落子，没有限制则使用Integer.MAX_VALUE;
 	 * @return 落子的列表 (以shorts).
 	 */
 	private List<Short> parseGame(StringTokenizer stoken, int maxBookDepth) {
@@ -145,7 +142,7 @@ public final class SgfParser {
 				token = stoken.nextToken();
 				final short move = sgfToPoint(token);
 				if (maxBookDepth != MAX_VALUE && move == PASS) {
-					// 从书中读到怪异的虚着，弃局
+					// 从棋谱中读到怪异的虚着，弃局
 					return null;
 				}
 				if (breakOnFirstPass && move == PASS) {
@@ -171,8 +168,7 @@ public final class SgfParser {
 	/**
 	 * 从文件中读入所有棋局，并以列表返回.列表中每个元素是落子的列表(shorts).
 	 * 
-	 * @param maxBookDepth
-	 *            查看每局棋的最大步数，或者Integer.MAX_VALUE表示无限制.
+	 * @param maxBookDepth 查看每局棋的最大步数，或者Integer.MAX_VALUE表示无限制.
 	 */
 	public List<List<Short>> parseGamesFromFile(File file, int maxBookDepth) {
 		final List<List<Short>> games = new ArrayList<>();

@@ -4,14 +4,13 @@ import static java.lang.Math.abs;
 
 import java.io.Serializable;
 
-import com.github.fangyun.ginkgo.experiment.Logging;
 import com.github.fangyun.ginkgo.mcts.CopiableStructure;
 import com.github.fangyun.ginkgo.thirdparty.MersenneTwisterFast;
 
 /**
  * 坐标系统用来转换短表示或其它表示位置方式. 没有公开的构造方法，而采用静态方法widthOf来获取正确实例.
  * <p>
- * 一个点体现为一个短表示. 这是一维数组表示的棋盘的一个索引值，数组在边缘带有哨兵点.
+ * 一个点体现为一个short表示. 这是一维数组表示的棋盘的一个索引值，数组在边缘带有哨兵点.
  * <p>
  * 遍历棋盘上所有点的标准方式：
  * 
