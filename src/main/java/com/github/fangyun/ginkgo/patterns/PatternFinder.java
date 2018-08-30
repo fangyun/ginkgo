@@ -13,6 +13,7 @@ import com.github.fangyun.ginkgo.core.Color;
 import com.github.fangyun.ginkgo.core.CoordinateSystem;
 import com.github.fangyun.ginkgo.thirdparty.MersenneTwisterFast;
 import com.github.fangyun.ginkgo.core.NonStoneColor;
+import static com.github.fangyun.ginkgo.experiment.PropertyPaths.GINKGO_ROOT;
 
 public final class PatternFinder {
 
@@ -222,7 +223,7 @@ public final class PatternFinder {
 		HashMap<String, Float> map = new HashMap<>();
 		HashMap<String, Long> hashMap = new HashMap<>();
 		Board board = new Board(19);
-		ShapeTable table = new ShapeTable("patterns" + File.separator + "patterns9x9-SHAPE-sf99.data", 0.99f);
+		ShapeTable table = new ShapeTable(GINKGO_ROOT+File.separator+"patterns" + File.separator + "patterns9stones-SHAPE-sf999.data", 0.999f);
 		int centerColumn = 11;
 		int centerRow = 16;
 		int patternRadius = 4;

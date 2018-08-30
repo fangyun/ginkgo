@@ -25,8 +25,7 @@ public class ShapeExtractor extends PatternExtractor {
 	public static void main(String[] args) {
 		for (int stones = 3; stones <= 9; stones++) {
 			ShapeExtractor extractor = new ShapeExtractor(true, 0.999f, stones);
-			extractor.buildPatternData(new File(
-					"/Users/drake/Documents/kgs-expert-games"));
+			extractor.buildPatternData(new File(GINKGO_ROOT+"sgf-test-files/19"));
 		}
 	}
 
