@@ -28,11 +28,11 @@ public final class FusekiBook implements OpeningBook {
 	/** 得到哈希Map从文件中. */
 	public FusekiBook(String directory) {
 		final InputStream is = getClass().getResourceAsStream("/books/ginkgo_fuseki19.data");
-		log("开始读公开棋谱");
+		log("开始读布局棋谱");
 		try (ObjectInputStream in = new ObjectInputStream(is)) {
 			maxMoves = (Integer) in.readObject();
 			book = (SmallHashMap) in.readObject();
-			log("读完公开棋谱");
+			log("读完布局棋谱");
 		} catch (final Exception e) {
 			e.printStackTrace();
 			System.exit(1);
