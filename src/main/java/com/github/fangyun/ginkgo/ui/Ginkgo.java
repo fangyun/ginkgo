@@ -4,23 +4,22 @@ import static com.github.fangyun.ginkgo.core.CoordinateSystem.RESIGN;
 import static com.github.fangyun.ginkgo.core.StoneColor.BLACK;
 import static com.github.fangyun.ginkgo.core.StoneColor.WHITE;
 import static com.github.fangyun.ginkgo.experiment.Git.getGitCommit;
+import static com.github.fangyun.ginkgo.experiment.Logging.log;
 import static com.github.fangyun.ginkgo.experiment.PropertyPaths.GINKGO_ROOT;
 import static java.io.File.separator;
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Double.parseDouble;
-import static java.lang.Integer.parseInt;
 import static java.lang.Float.parseFloat;
-
-import static com.github.fangyun.ginkgo.experiment.Logging.*;
+import static java.lang.Integer.parseInt;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -80,7 +79,7 @@ public final class Ginkgo {
 			"gogui-analyze_commands", "gogui-get-wins", "gogui-search-values", "known_command", "kgs-game_over",
 			"kgs-genmove_cleanup", "komi", "list_commands", "loadsgf", "name", "play", "playout_count",
 			"protocol_version", "quit", "reg_genmove", "showboard", "time_left", "time_settings", "undo", "version",
-			"white"};
+			"white" };
 
 	public static void main(String[] args) throws IOException {
 		new Ginkgo(args).run();
@@ -99,12 +98,13 @@ public final class Ginkgo {
 	private final List<String> commands;
 
 	/**
-	 * 输入流.
+	 * 输入流
 	 */
-	private final BufferedReader in;
-
-	/** 输出流. */
-	private final PrintStream out;
+	private BufferedReader in;
+	/**
+	 * 输出流
+	 */
+	private PrintStream out;
 
 	/** 下棋的棋手. */
 	private Player player;
@@ -112,19 +112,15 @@ public final class Ginkgo {
 	/** 棋手构建器. */
 	private PlayerBuilder playerBuilder;
 
+	/** 作为服务端的Ginkgo监听的端口 */
+	private Integer port;
+
 	/**
-	 * @param inStream
-	 *            驱动程序的输入流(通常为System.in)
-	 * @param outStream
-	 *            打印响应到输出流(通常为System.out)
+	 * 本地模式(非服务器模式)
 	 */
-	private Ginkgo(InputStream inStream, OutputStream outStream, String[] args) {
-		in = new BufferedReader(new InputStreamReader(inStream));
-		if (outStream instanceof PrintStream) {
-			out = (PrintStream) outStream;
-		} else {
-			out = new PrintStream(outStream);
-		}
+	private boolean localModel = true;
+
+	private Ginkgo(String[] args) {
 		handleCommandLineArguments(args);
 		commandLineArgs = "";
 		for (final String arg : args) {
@@ -136,11 +132,9 @@ public final class Ginkgo {
 		}
 	}
 
-	private Ginkgo(String[] args) {
-		this(System.in, System.out, args);
-	}
-
-	/** 应答被处理的最新命令. */
+	/**
+	 * 应答被处理的最新命令.
+	 */
 	private void acknowledge() {
 		acknowledge("");
 	}
@@ -159,7 +153,9 @@ public final class Ginkgo {
 		out.println(response + "\n");
 	}
 
-	/** 指出最新的命令不能被处理. */
+	/**
+	 * 指出最新的命令不能被处理.
+	 */
 	private void error(String message) {
 		String response;
 		if (commandId >= 0) {
@@ -200,9 +196,9 @@ public final class Ginkgo {
 	/**
 	 * handleCommand(String)的帮助方法.
 	 * 
+	 * @param arguments 包含给命令的参数. 例如, 落子颜色
+	 * 
 	 * @return true 除了"quit"命令，其它都返回.
-	 * @param arguments
-	 *            包含给命令的参数. 例如, 落子颜色
 	 */
 	private boolean handleCommand(String command, StringTokenizer arguments) {
 		final CoordinateSystem coords = player.getBoard().getCoordinateSystem();
@@ -415,7 +411,10 @@ public final class Ginkgo {
 				right = "true";
 			}
 			// 处理属性
-			if (left.equals("biasdelay")) {
+			if (left.equals("port")) {
+				this.port = parseInt(right);
+				this.localModel = false;
+			} else if (left.equals("biasdelay")) {
 				playerBuilder.biasDelay(parseInt(right));
 			} else if (left.equals("boardsize")) {
 				playerBuilder.boardWidth(parseInt(right));
@@ -464,16 +463,32 @@ public final class Ginkgo {
 
 	/** 接受并处理GTP命令直到收到quit命令. */
 	private void run() throws IOException {
-		String input;
-		do {
-			input = "";
-			while (input.equals("")) {
-				input = in.readLine();
-				if (input == null) {
-					return;
-				}
+		ServerSocket listener = null;
+		try {
+			if (localModel) {
+				in = new BufferedReader(new InputStreamReader(System.in));
+				out = System.out;
+			} else {
+				listener = new ServerSocket(port);
+				Socket socket = listener.accept();
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				out = new PrintStream(socket.getOutputStream(), true);
 			}
-		} while (handleCommand(input));
-	}
 
+			String input;
+			do {
+				input = "";
+				while (input.equals("")) {
+					input = in.readLine();
+					if (input == null) {
+						return;
+					}
+				}
+			} while (handleCommand(input));
+		} finally {
+			if (listener != null) {
+				listener.close();
+			}
+		}
+	}
 }
