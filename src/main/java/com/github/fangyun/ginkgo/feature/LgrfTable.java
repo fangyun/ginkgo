@@ -21,7 +21,7 @@ public final class LgrfTable implements Serializable {
 	private final short[][] replies1;
 
 	/**
-	 * 条目 [c][i][j] 是着子i对颜色c最好的回复(或者NO_POINT，如果没有).
+	 * 条目 [c][i][j] 是着子i,j对颜色c最好的回复(或者NO_POINT，如果没有).
 	 */
 	private final short[][][] replies2;
 

@@ -10,7 +10,7 @@ import com.github.fangyun.ginkgo.thirdparty.MersenneTwisterFast;
 import com.github.fangyun.ginkgo.util.ShortList;
 
 /**
- * 做出一些满足某些谓词的随机移动.
+ * 做出一些满足某些谓词的随机落子.
  */
 public final class PredicateMover implements Mover {
 	private static final long serialVersionUID = -395681488790478014L;

@@ -431,7 +431,7 @@ public final class Player {
 		}
 		log("启动线程");
 		SearchNode root = getRoot();
-		if (!root.biasUpdated()) {
+		if (!root.biasUpdated()) { //TODO
 			getMcRunnable(0).copyDataFrom(board);
 			root.updateBias(getMcRunnable(0));
 		}
